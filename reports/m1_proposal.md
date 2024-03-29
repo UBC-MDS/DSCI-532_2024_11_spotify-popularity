@@ -5,8 +5,8 @@ We will be working with a dataset from [Kaggle](https://www.kaggle.com/) compris
 The variables in the `tracks` dataset fall into several key categories:
 
 * **Identification**:  including `id`, `name`, `artists`, and `id_artists`.  These variables can help in the unique identification of each track.
-* **Popularity**: Our variable of interest, `popularity`, reflects the listener engagement and is crucial for understanding the listener behavior and making data-driven decisions in the music industry.
-* **Release Date**: release data for every track. We will standardize this to capture only the release year and filter out tracks from the last 20 years in the dataset (2000 - 2020) to focus our analysis on contemporary trends and reduce dataset size.
+* **Popularity**: Our variable of interest, `popularity`, reflects the listener engagement and is crucial for understanding listener behavior and making data-driven decisions in the music industry..
+* **Release Date**: release date for every track. We will standardize this to capture only the release year and filter out tracks from the last 20 years in the dataset (2000 - 2020) to focus our analysis on contemporary trends and reduce dataset size.
 * **Musical Features** : variables that quantify the musical elements, including `danceability`, `energy`, `key`, `loudness`, `mode`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, and `valence`.
 * **Temporal Features** :  `duration_ms`, `tempo`, and `time_signature` offer insights into the rhythm and length of the tracks.
 * **Categorical Data** : The `explicit` variable is a binary categorical variable indicating whether a track contains explicit content.
@@ -17,4 +17,4 @@ Additionally, we plan to engineer new categorical variables from the `speechines
 
 In the `artists` dataset, the variables `id`, `name`, `followers`, `genres`, and `popularity` help us understand the artists' reach, their genre associations, and engagement levels within the music industry. Our focus will be particularly on the `genres` and `popularity` variables for this part of the dataset.
 
-Our project will focus on the two aspects: `genre` and `artists`, which are pivotal for investment decisions within the music industry. Our project will study a series of selected features that hold the key to understanding track popularity, including `danceability`, `energy`, `valence`, `loudness`, `acousticness`, `instrumentalness`, `speechiness`and `liveness`, and two newly derived features:  `speechiness_category `and `live` as well. By looking at the `release_date`, we can also see how the popularity of different genre or these special features change over the years.
+Our project will focus on the two aspects: genre and artists, that are pivotal for investment decisions within the music industry. Our project will study a series of selected features that hold the key to understanding track popularity, including `danceability`, `energy`, `valence`, `loudness`, `acousticness`, `instrumentalness`, `speechiness`and `liveness`, and two newly derived features:  `speechiness_category `and `live` as well. By looking at the `release_date`, we can also see how the popularity of different genre or these special features change over the years.
