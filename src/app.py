@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 tracks_df = pd.read_csv('data/raw/tracks_processed.csv')
 
 artist_dropdown = dcc.Dropdown(
@@ -98,4 +99,4 @@ if __name__ == '__main__':
     import dash
 
     print("dash version=", dash.__version__)
-    app.run(debug=True)
+    app.run(debug=False)
