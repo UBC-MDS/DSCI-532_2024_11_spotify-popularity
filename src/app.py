@@ -71,7 +71,7 @@ app.layout = dbc.Container([
 )
 def display_artist_tracks(selected_artists, start_year, end_year):
     if selected_artists is None or start_year is None or end_year is None:
-        return []
+        return "", "", "", "", "", "", "", ""
     else:
         tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
