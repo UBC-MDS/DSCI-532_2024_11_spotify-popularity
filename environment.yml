@@ -8,11 +8,11 @@ dependencies:
     - dash-bootstrap-components=1.0.2
     - plotly=5.3.1
     - pip=21.2.4
+    - pandas=2.2.1
 pip:
-    - dash-vega-components==0.1.0
+    - dash-vega-components=0.1.0
     - dash-core-components=2.0.0
     - dash-html-components=2.0.0
     - dash-table=5.0.0
     - flask>=3.0.0
     - werkzeug>=3.0.0
-    - pandas==2.2.1
