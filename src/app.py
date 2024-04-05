@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-tracks_df = pd.read_csv('../data/raw/tracks_processed.csv')
+tracks_df = pd.read_csv('data/raw/tracks_processed.csv')
 
 # Layout
 app.layout = dbc.Container([
