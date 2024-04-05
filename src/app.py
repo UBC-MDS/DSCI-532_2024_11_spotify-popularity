@@ -6,34 +6,38 @@ import dash_bootstrap_components as dbc
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 tracks_df = pd.read_csv('../data/raw/tracks_processed.csv')
 
+artist_dropdown = dcc.Dropdown(
+    options=tracks_df['artist'].unique(),
+    multi=True,
+    placeholder='Select multiple artists...',
+    id='artists-dropdown'
+)
+
+year_range_selector = dbc.Row([
+    dbc.Col(
+        dcc.Dropdown(
+            options=sorted(tracks_df['release_year'].unique()),
+            multi=False,
+            placeholder='Select the start year...',
+            id='start-year'
+        )),
+    dbc.Col(
+        dcc.Dropdown(
+            options=sorted(tracks_df['release_year'].unique()),
+            multi=False,
+            placeholder='Select the end year...',
+            id='end-year'
+        ))])
+
 # Layout
 app.layout = dbc.Container([
     html.Title('Spotify Popularity Dashboard'),
     html.Label('Select the artists you want to analyze:'),
     html.Br(),
-    dcc.Dropdown(
-        options=tracks_df['artist'].unique(),
-        multi=True,
-        placeholder='Select multiple artists...',
-        id='artists-dropdown'
-    ),
+    artist_dropdown,
     html.Label('Select the start and end year for the analysis:'),
     html.Br(),
-    dbc.Row([
-        dbc.Col(
-            dcc.Dropdown(
-                options=sorted(tracks_df['release_year'].unique()),
-                multi=False,
-                placeholder='Select the start year...',
-                id='start-year'
-            )),
-        dbc.Col(
-            dcc.Dropdown(
-                options=sorted(tracks_df['release_year'].unique()),
-                multi=False,
-                placeholder='Select the end year...',
-                id='end-year'
-            ))]),
+    year_range_selector,
     html.Br(),
     html.Label('Song features - Top 5 Popular Songs'),
     html.Br(),
@@ -54,7 +58,6 @@ app.layout = dbc.Container([
     html.Label('Mean valence:'),
     html.Div(id='mean-valence')
 ])
-
 
 @app.callback(
     [Output('mean-danceability', 'children'),
