@@ -23,5 +23,5 @@ conda activate 532_Spotify_Popularity
 
 5. Run the following command to run the app:
 ```shell
-python app.py
+python src/app.py
 ```
