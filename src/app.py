@@ -6,6 +6,7 @@ import dash_vega_components as dvc
 import altair as alt
 from itertools import product
 
+
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -25,6 +26,7 @@ unique_genres = sorted(set(genre for sublist in tracks_df['genres'] for genre in
 genre_dropdown_options = [{'label': genre, 'value': genre} for genre in unique_genres]
 
 # Configuration
+title= [html.H1('Spotify Popularity Dashboard'), html.Br()]
 genre_dropdown = dcc.Dropdown(
     options= genre_dropdown_options,
     multi=False,
@@ -86,9 +88,22 @@ summary_statistics = dbc.Col([
         dbc.Card(id='mean-valence', style={"border": 0, "color" : "#1db954"}, outline=True)
     )
 ])
+bottom_blub=[
+    html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
+           style={"font-size": "20px"}),
+    html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
+           style={"font-size": "12px"}),
+    html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
+           target="_blank", style={"font-size": "12px"}),
+    html.P("Last deployed on April 6, 2023",
+           style={"font-size": "12px"})
+           ]
+top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={})
+
 
 # Layout
 app.layout = dbc.Container([
+    dbc.Row(dbc.Col(title)),
     dbc.Row([
         html.Title('Spotify Popularity Dashboard'),
         html.Label('Select the genre you want to analyze:'),
@@ -102,17 +117,21 @@ app.layout = dbc.Container([
         html.Br()
     ]),
     dbc.Row([
-        dbc.Col(
-            # [html.Label('Plots will go here'),
-           dbc.Row( [dbc.Col(html.Div(artist_time_chart)),
-            dbc.Col(html.Div(explicit_chart))
+        dbc.Col([
+           dbc.Row([
+               dbc.Col(html.Div(artist_time_chart)),
+               dbc.Col(html.Div(explicit_chart))
+            ]),
+            dbc.Row([
+                dbc.Col(top5songs_barchart),
+                dbc.Col(html.Label('Another plot to go here'))
             ])
-        ),
-
+        ]),
         dbc.Col(
             summary_statistics, width=3
         )
-    ])
+    ]),
+    dbc.Row(dbc.Col(bottom_blub))
 ])
 
 @app.callback(
@@ -181,6 +200,32 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence
+    
+@app.callback(
+    Output("top5songs-barchart", 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+def update_top_songs_bar_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
+    fig = alt.Chart(tracks_df_filtered_top_five, width='container').mark_bar().encode(
+        x=alt.X('popularity', title="Popularity"),
+        y=alt.Y('name', title="Song Name").sort('-x'),
+        color=alt.Color('artist', legend=None).scale(scheme="greens"),
+        tooltip=['artist','release_year']
+    ).properties(
+        title='Popularity of Top Songs'
+    ).to_dict()
+    
+    return fig
 
 @app.callback(
     Output('artists-dropdown', 'options'),
