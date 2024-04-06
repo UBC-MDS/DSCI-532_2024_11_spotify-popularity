@@ -1,6 +1,10 @@
 from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import dash_bootstrap_components as dbc
+import ast
+import dash_vega_components as dvc
+import altair as alt
+from itertools import product
 
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -30,6 +34,7 @@ year_range_selector = dbc.Row([
             id='end-year'
         ))
 ])
+artist_time_chart =  dvc.Vega(id='artist-time-chart', spec={})
 summary_statistics = dbc.Col([
     html.Label('Song features - Top 5 Popular Songs'),
     html.Br(),
@@ -73,7 +78,9 @@ app.layout = dbc.Container([
     ]),
     dbc.Row([
         dbc.Col(
-            html.Label('Plots will go here')
+            #html.Label('Plots will go here')
+                       dbc.Row( [dbc.Col(html.Div(artist_time_chart)),
+            ])
         ),
         dbc.Col(
             summary_statistics, width=3
@@ -148,6 +155,35 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence
 
+
+@app.callback(
+    Output('artist-time-chart', 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+
+def update_time_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.3).encode(
+        x=alt.X('release_year', 
+                scale=alt.Scale(domain=[start_year, end_year]),
+                axis=alt.Axis(format=''),
+                title='Release Year'),
+        y=alt.Y('mean(popularity)', title='Popularity'),
+        color=alt.Color('artist', legend=alt.Legend(title="Artist")),
+        tooltip=['artist', 'release_year', 'mean(popularity)']
+    ).properties(
+        title='Artist Popularity Over Time'  # Add a title to the chart
+    )
+    chart = chart + chart.mark_line()
+    return chart.to_dict()
 
 # Run the app/dashboard
 if __name__ == '__main__':
