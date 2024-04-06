@@ -57,6 +57,8 @@ year_range_selector = dbc.Row([
 
 artist_time_chart =  dvc.Vega(id='artist-time-chart', spec={})
 explicit_chart = dvc.Vega(id='explicit-chart', spec={})
+top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={})
+speechiness_chart = dvc.Vega(id='speechiness-chart', spec={})
 
 summary_statistics = dbc.Col([
     html.Br(),
@@ -97,8 +99,6 @@ milestone_blurb=[
     html.P("Last deployed on April 6, 2023",
            style={"font-size": "12px"})
            ]
-top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={})
-
 
 # Layout
 app.layout = html.Div([
@@ -139,8 +139,8 @@ app.layout = html.Div([
             dbc.Row([
                 dbc.Col([
                     dbc.Row([
-                        dbc.Col(top5songs_barchart, style={'width': '50%'}),
-                        dbc.Col(html.Label('Another plot to go here'), style={'width': '50%'})
+                        dbc.Col(html.Div(top5songs_barchart), style={'width': '50%'}),
+                        dbc.Col(html.Div(speechiness_chart), style={'width': '50%'})
                     ])
                 ])
             ])
@@ -219,32 +219,6 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence
-    
-@app.callback(
-    Output("top5songs-barchart", 'spec'),
-    [
-        Input('artists-dropdown', 'value'),
-        Input('start-year', 'value'),
-        Input('end-year', 'value')
-    ]
-)
-def update_top_songs_bar_chart(selected_artists, start_year, end_year):
-    if selected_artists is None or start_year is None or end_year is None:
-        return {}
-    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
-                                       (tracks_df['release_year'] >= start_year) &
-                                       (tracks_df['release_year'] <= end_year)]
-    tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
-    fig = alt.Chart(tracks_df_filtered_top_five, width='container').mark_bar().encode(
-        x=alt.X('popularity', title="Popularity"),
-        y=alt.Y('name', title="Song Name").sort('-x'),
-        color=alt.Color('artist', legend=None).scale(scheme="greens"),
-        tooltip=['artist','release_year']
-    ).properties(
-        title='Popularity of Top Songs'
-    ).to_dict()
-    
-    return fig
 
 @app.callback(
     Output('artists-dropdown', 'options'),
@@ -334,6 +308,63 @@ def create_explicit_chart(selected_artists, start_year, end_year):
     )
 
     return chart.to_dict()
+
+@app.callback(
+    Output("top5songs-barchart", 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+def update_top_songs_bar_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
+    fig = alt.Chart(tracks_df_filtered_top_five, width='container').mark_bar().encode(
+        x=alt.X('popularity', title="Popularity"),
+        y=alt.Y('name', title="Song Name").sort('-x'),
+        color=alt.Color('artist', legend=None).scale(scheme="greens"),
+        tooltip=['artist','release_year']
+    ).properties(
+        title='Popularity of Top Songs'
+    ).to_dict()
+    
+    return fig
+
+@app.callback(
+    Output('speechiness-chart', 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+
+def update_speechiness_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.7).encode(
+        x=alt.X('release_year', 
+                scale=alt.Scale(domain=[start_year, end_year]),
+                axis=alt.Axis(format=''),
+                title='Release Year'),
+        y=alt.Y('popularity', title='Popularity'),
+        color=alt.Color('speechiness_binned:N', legend=alt.Legend(title="Speechiness")),
+        tooltip=['artist', 'name', 'release_year', 'popularity']
+    ).properties(
+        title='Popularity by Speechiness over Time'
+    )
+    
+    fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_binned']).mark_line()
+
+    return fig.to_dict()
 
 # Run the app/dashboard
 if __name__ == '__main__':
