@@ -194,7 +194,7 @@ def update_artist_dropdown(selected_genres):
     artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
     return artist_options
 
-  @app.callback(
+@app.callback(
     Output('artist-time-chart', 'spec'),
     [
         Input('artists-dropdown', 'value'),
