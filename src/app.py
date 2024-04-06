@@ -26,7 +26,6 @@ unique_genres = sorted(set(genre for sublist in tracks_df['genres'] for genre in
 genre_dropdown_options = [{'label': genre, 'value': genre} for genre in unique_genres]
 
 # Configuration
-title= [html.H1('Spotify Popularity Dashboard'), html.Br()]
 genre_dropdown = dcc.Dropdown(
     options= genre_dropdown_options,
     multi=False,
@@ -88,7 +87,7 @@ summary_statistics = dbc.Col([
         dbc.Card(id='mean-valence', style={"border": 0, "color" : "#1db954"}, outline=True)
     )
 ])
-bottom_blub=[
+milestone_blurb=[
     html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
            style={"font-size": "20px"}),
     html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
@@ -102,37 +101,57 @@ top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={})
 
 
 # Layout
-app.layout = dbc.Container([
-    dbc.Row(dbc.Col(title)),
-    dbc.Row([
-        html.Title('Spotify Popularity Dashboard'),
-        html.Label('Select the genre you want to analyze:'),
-        genre_dropdown,
-        html.Label('Select the artists you want to analyze:'),
-        html.Br(),
-        artist_dropdown,
-        html.Label('Select the start and end year for the analysis:'),
-        html.Br(),
-        year_range_selector,
-        html.Br()
-    ]),
+app.layout = html.Div([
     dbc.Row([
         dbc.Col([
-           dbc.Row([
-               dbc.Col(html.Div(artist_time_chart)),
-               dbc.Col(html.Div(explicit_chart))
+            html.Div([
+                html.H1('Spotify Popularity Dashboard'),
+                html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
+                    style={"font-size": "16px"}),
+                html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
+                    style={"font-size": "12px"}),
+                html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
+                    target="_blank", style={"font-size": "12px"}),
+                html.P("Last deployed on April 6, 2023",
+                    style={"font-size": "12px"})
+            ])
+        ], width=2, className="col-2", style={'margin-left': '5px'}),
+        dbc.Col([
+            dbc.Row([
+                dbc.Col([
+                    html.Label('Select the genre you want to analyze:'),
+                    genre_dropdown,
+                    html.Label('Select the artists you want to analyze:'),
+                    artist_dropdown,
+                    html.Label('Select the start and end year for the analysis:'),
+                    year_range_selector,
+                    html.Br()
+                ])
             ]),
             dbc.Row([
-                dbc.Col(top5songs_barchart),
-                dbc.Col(html.Label('Another plot to go here'))
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(html.Div(artist_time_chart),  style={'width': '50%'}),
+                        dbc.Col(html.Div(explicit_chart),  style={'width': '50%'})
+                    ])
+                ])
+            ]),
+            dbc.Row([
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(top5songs_barchart, style={'width': '50%'}),
+                        dbc.Col(html.Label('Another plot to go here'), style={'width': '50%'})
+                    ])
+                ])
             ])
-        ]),
-        dbc.Col(
-            summary_statistics, width=3
-        )
-    ]),
-    dbc.Row(dbc.Col(bottom_blub))
+        ], width=7, className="col-7"),
+        dbc.Col([
+            summary_statistics
+        ], width=2, className="col-2")
+    ])
 ])
+
+
 
 @app.callback(
     [Output('mean-danceability', 'children'),
