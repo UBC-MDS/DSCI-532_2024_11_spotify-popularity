@@ -209,7 +209,7 @@ def update_time_chart(selected_artists, start_year, end_year):
     tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
-    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.3).encode(
+    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.7).encode(
         x=alt.X('release_year', 
                 scale=alt.Scale(domain=[start_year, end_year]),
                 axis=alt.Axis(format=''),
