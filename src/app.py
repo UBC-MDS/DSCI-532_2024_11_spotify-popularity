@@ -8,6 +8,7 @@ server = app.server
 tracks_df = pd.read_csv('data/raw/tracks_processed.csv')
 
 # Configuration
+title= [html.H1('Spotify Popularity Dashboard'), html.Br()]
 artist_dropdown = dcc.Dropdown(
     options=tracks_df['artist'].unique(),
     multi=True,
@@ -58,11 +59,21 @@ summary_statistics = dbc.Col([
         dbc.Card(id='mean-valence')
     )
 ])
+bottom_blub=[
+    html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
+           style={"font-size": "20px"}),
+    html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
+           style={"font-size": "12px"}),
+    html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
+           target="_blank", style={"font-size": "12px"}),
+    html.P("Last deployed on April 6, 2023",
+           style={"font-size": "12px"})
+           ]
 
 # Layout
 app.layout = dbc.Container([
+    dbc.Row(dbc.Col(title)),
     dbc.Row([
-        html.Title('Spotify Popularity Dashboard'),
         html.Label('Select the artists you want to analyze:'),
         html.Br(),
         artist_dropdown,
@@ -78,7 +89,8 @@ app.layout = dbc.Container([
         dbc.Col(
             summary_statistics, width=3
         )
-    ])
+    ]),
+    dbc.Row(dbc.Col(bottom_blub))
 ])
 
 @app.callback(
