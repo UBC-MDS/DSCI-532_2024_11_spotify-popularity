@@ -1,13 +1,33 @@
 from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import dash_bootstrap_components as dbc
+import ast
 
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 tracks_df = pd.read_csv('data/raw/tracks_processed.csv')
 
+
+# convert stringified lists into actual lists
+def convert_string_to_list(string):
+    try:
+        return ast.literal_eval(string)
+    # Return an empty list if the string is not a valid list representation
+    except ValueError:
+        return []  
+        
+tracks_df['genres'] = tracks_df['genres'].apply(convert_string_to_list)
+unique_genres = sorted(set(genre for sublist in tracks_df['genres'] for genre in sublist))
+genre_dropdown_options = [{'label': genre, 'value': genre} for genre in unique_genres]
+
 # Configuration
+genre_dropdown = dcc.Dropdown(
+    options= genre_dropdown_options,
+    multi=True,
+    placeholder='Select a genre...',
+    id='genre-dropdown'
+)
 artist_dropdown = dcc.Dropdown(
     options=tracks_df['artist'].unique(),
     multi=True,
@@ -149,6 +169,17 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence
 
+@app.callback(
+    Output('artists-dropdown', 'options'),
+    [Input('genre-dropdown', 'value')]
+)
+
+def update_artist_dropdown(selected_genres):
+    if not selected_genres:
+        return []
+    filtered_artists = tracks_df[tracks_df['genres'].apply(lambda x: any(genre in selected_genres for genre in x))]
+    artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
+    return artist_options
 
 # Run the app/dashboard
 if __name__ == '__main__':
