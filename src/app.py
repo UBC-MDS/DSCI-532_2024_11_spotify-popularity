@@ -31,31 +31,31 @@ year_range_selector = dbc.Row([
         ))
 ])
 summary_statistics = dbc.Col([
-    html.Label('Song features - Top 5 Popular Songs'),
-    html.Br(),
+    html.H4('Song features'),
+    html.H5('Top 5 Popular Songs'),
     dbc.Row(
-        dbc.Card(id='mean-danceability')
+        dbc.Card(id='mean-danceability', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy')
+        dbc.Card(id='mean-energy', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness')
+        dbc.Card(id='mean-loudness', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness')
+        dbc.Card(id='mean-speechiness', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness')
+        dbc.Card(id='mean-acousticness', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness')
+        dbc.Card(id='mean-instrumentalness', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness')
+        dbc.Card(id='mean-liveness', style={"border": 0})
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence')
+        dbc.Card(id='mean-valence', style={"border": 0})
     )
 ])
 
