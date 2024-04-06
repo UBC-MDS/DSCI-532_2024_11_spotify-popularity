@@ -7,13 +7,13 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 tracks_df = pd.read_csv('data/raw/tracks_processed.csv')
 
+# Configuration
 artist_dropdown = dcc.Dropdown(
     options=tracks_df['artist'].unique(),
     multi=True,
     placeholder='Select multiple artists...',
     id='artists-dropdown'
 )
-
 year_range_selector = dbc.Row([
     dbc.Col(
         dcc.Dropdown(
@@ -28,36 +28,57 @@ year_range_selector = dbc.Row([
             multi=False,
             placeholder='Select the end year...',
             id='end-year'
-        ))])
+        ))
+])
+summary_statistics = dbc.Col([
+    html.Label('Song features - Top 5 Popular Songs'),
+    html.Br(),
+    dbc.Row(
+        dbc.Card(id='mean-danceability')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-energy')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-loudness')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-speechiness')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-acousticness')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-instrumentalness')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-liveness')
+    ),
+    dbc.Row(
+        dbc.Card(id='mean-valence')
+    )
+])
 
 # Layout
 app.layout = dbc.Container([
-    html.Title('Spotify Popularity Dashboard'),
-    html.Label('Select the artists you want to analyze:'),
-    html.Br(),
-    artist_dropdown,
-    html.Label('Select the start and end year for the analysis:'),
-    html.Br(),
-    year_range_selector,
-    html.Br(),
-    html.Label('Song features - Top 5 Popular Songs'),
-    html.Br(),
-    html.Label('Mean danceability:'),
-    html.Div(id='mean-danceability'),
-    html.Label('Mean energy:'),
-    html.Div(id='mean-energy'),
-    html.Label('Mean loudness:'),
-    html.Div(id='mean-loudness'),
-    html.Label('Mean speechiness:'),
-    html.Div(id='mean-speechiness'),
-    html.Label('Mean acousticness:'),
-    html.Div(id='mean-acousticness'),
-    html.Label('Mean instrumentalness:'),
-    html.Div(id='mean-instrumentalness'),
-    html.Label('Mean liveness:'),
-    html.Div(id='mean-liveness'),
-    html.Label('Mean valence:'),
-    html.Div(id='mean-valence')
+    dbc.Row([
+        html.Title('Spotify Popularity Dashboard'),
+        html.Label('Select the artists you want to analyze:'),
+        html.Br(),
+        artist_dropdown,
+        html.Label('Select the start and end year for the analysis:'),
+        html.Br(),
+        year_range_selector,
+        html.Br()
+    ]),
+    dbc.Row([
+        dbc.Col(
+            html.Label('Plots will go here')
+        ),
+        dbc.Col(
+            summary_statistics, width=3
+        )
+    ])
 ])
 
 @app.callback(
@@ -90,8 +111,42 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         mean_instrumentalness = "{:.3g}".format(tracks_df_filtered_top_five['instrumentalness'].mean())
         mean_liveness = "{:.3g}".format(tracks_df_filtered_top_five['liveness'].mean())
         mean_valence = "{:.3g}".format(tracks_df_filtered_top_five['valence'].mean())
-        return mean_danceability, mean_energy, mean_loudness, mean_speechiness, mean_acousticness, \
-               mean_instrumentalness, mean_liveness, mean_valence
+
+        card_mean_danceability = [
+            dbc.CardHeader('Danceability'),
+            dbc.CardBody(mean_danceability)
+        ]
+        card_mean_energy = [
+            dbc.CardHeader('Energy'),
+            dbc.CardBody(mean_energy)
+        ]
+        card_mean_loudness = [
+            dbc.CardHeader('Loudness'),
+            dbc.CardBody(mean_loudness)
+        ]
+        card_mean_speechiness = [
+            dbc.CardHeader('Speechiness'),
+            dbc.CardBody(mean_speechiness)
+        ]
+        card_mean_acousticness = [
+            dbc.CardHeader('Acousticness'),
+            dbc.CardBody(mean_acousticness)
+        ]
+        card_mean_instrumentalness = [
+            dbc.CardHeader('Instrumentalness'),
+            dbc.CardBody(mean_instrumentalness)
+        ]
+        card_mean_liveness = [
+            dbc.CardHeader('Liveness'),
+            dbc.CardBody(mean_liveness)
+        ]
+        card_mean_valence = [
+            dbc.CardHeader('Valence'),
+            dbc.CardBody(mean_valence)
+        ]
+        
+        return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
+               card_mean_instrumentalness, card_mean_liveness, card_mean_valence
 
 
 # Run the app/dashboard
