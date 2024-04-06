@@ -5,7 +5,7 @@ import ast
 import dash_vega_components as dvc
 import altair as alt
 from itertools import product
- 
+
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -31,7 +31,6 @@ genre_dropdown = dcc.Dropdown(
     placeholder='Select a genre...',
     id='genre-dropdown'
 )
-
 artist_dropdown = dcc.Dropdown(
     options=tracks_df['artist'].unique(),
     multi=True,
@@ -59,31 +58,32 @@ artist_time_chart =  dvc.Vega(id='artist-time-chart', spec={})
 explicit_chart = dvc.Vega(id='explicit-chart', spec={})
 
 summary_statistics = dbc.Col([
-    html.Label('Song features - Top 5 Popular Songs'),
     html.Br(),
+    html.H4('Song features (Mean)', className='text-center'),
+    html.H5('Top 5 Popular Songs', className='text-center'),
     dbc.Row(
-        dbc.Card(id='mean-danceability')
+        dbc.Card(id='mean-danceability', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy')
+        dbc.Card(id='mean-energy', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness')
+        dbc.Card(id='mean-loudness', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness')
+        dbc.Card(id='mean-speechiness', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness')
+        dbc.Card(id='mean-acousticness', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness')
+        dbc.Card(id='mean-instrumentalness', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness')
+        dbc.Card(id='mean-liveness', style={"border": 0, "color" : "#1db954"}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence')
+        dbc.Card(id='mean-valence', style={"border": 0, "color" : "#1db954"}, outline=True)
     )
 ])
 
@@ -147,36 +147,36 @@ def display_artist_tracks(selected_artists, start_year, end_year):
         mean_valence = "{:.3g}".format(tracks_df_filtered_top_five['valence'].mean())
 
         card_mean_danceability = [
-            dbc.CardHeader('Danceability'),
-            dbc.CardBody(mean_danceability)
+            dbc.CardHeader('Danceability', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_danceability, className='text-center')
         ]
         card_mean_energy = [
-            dbc.CardHeader('Energy'),
-            dbc.CardBody(mean_energy)
+            dbc.CardHeader('Energy', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_energy, className='text-center')
         ]
         card_mean_loudness = [
-            dbc.CardHeader('Loudness'),
-            dbc.CardBody(mean_loudness)
+            dbc.CardHeader('Loudness', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_loudness, className='text-center')
         ]
         card_mean_speechiness = [
-            dbc.CardHeader('Speechiness'),
-            dbc.CardBody(mean_speechiness)
+            dbc.CardHeader('Speechiness', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_speechiness, className='text-center')
         ]
         card_mean_acousticness = [
-            dbc.CardHeader('Acousticness'),
-            dbc.CardBody(mean_acousticness)
+            dbc.CardHeader('Acousticness', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_acousticness, className='text-center')
         ]
         card_mean_instrumentalness = [
-            dbc.CardHeader('Instrumentalness'),
-            dbc.CardBody(mean_instrumentalness)
+            dbc.CardHeader('Instrumentalness', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_instrumentalness, className='text-center')
         ]
         card_mean_liveness = [
-            dbc.CardHeader('Liveness'),
-            dbc.CardBody(mean_liveness)
+            dbc.CardHeader('Liveness', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_liveness, className='text-center')
         ]
         card_mean_valence = [
-            dbc.CardHeader('Valence'),
-            dbc.CardBody(mean_valence)
+            dbc.CardHeader('Valence', style={"color" : "#1db954"}, className='text-center'),
+            dbc.CardBody(mean_valence, className='text-center')
         ]
         
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
@@ -194,7 +194,7 @@ def update_artist_dropdown(selected_genres):
     artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
     return artist_options
 
-@app.callback(
+  @app.callback(
     Output('artist-time-chart', 'spec'),
     [
         Input('artists-dropdown', 'value'),
@@ -270,10 +270,6 @@ def create_explicit_chart(selected_artists, start_year, end_year):
     )
 
     return chart.to_dict()
-
-
-
-
 
 # Run the app/dashboard
 if __name__ == '__main__':
