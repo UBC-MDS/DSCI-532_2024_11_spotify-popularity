@@ -325,8 +325,8 @@ def update_top_songs_bar_chart(selected_artists, start_year, end_year):
                                        (tracks_df['release_year'] <= end_year)]
     tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
     fig = alt.Chart(tracks_df_filtered_top_five, width='container').mark_bar().encode(
-        x=alt.X('popularity', title="Popularity"),
-        y=alt.Y('name', title="Song Name").sort('-x'),
+        y=alt.Y('popularity', title="Popularity"),
+        x=alt.X('name', axis=alt.Axis(labelAngle=-15), title='Song Name').sort('-y'),
         color=alt.Color('artist', legend=None).scale(scheme="greens"),
         tooltip=['artist','release_year']
     ).properties(
