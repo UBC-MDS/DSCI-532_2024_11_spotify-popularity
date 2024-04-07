@@ -6,6 +6,7 @@ import dash_vega_components as dvc
 import altair as alt
 from itertools import product
 
+
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -56,64 +57,101 @@ year_range_selector = dbc.Row([
 
 artist_time_chart =  dvc.Vega(id='artist-time-chart', spec={})
 explicit_chart = dvc.Vega(id='explicit-chart', spec={})
+top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={})
+speechiness_chart = dvc.Vega(id='speechiness-chart', spec={})
 
 summary_statistics = dbc.Col([
     html.Br(),
     html.H4('Song features (Mean)', className='text-center'),
     html.H5('Top 5 Popular Songs', className='text-center'),
     dbc.Row(
-        dbc.Card(id='mean-danceability', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-danceability', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-energy', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-loudness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-speechiness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-acousticness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-instrumentalness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-liveness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-valence', style={"border": 0}, outline=True)
     )
 ])
+milestone_blurb=[
+    html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
+           style={"font-size": "20px"}),
+    html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
+           style={"font-size": "12px"}),
+    html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
+           target="_blank", style={"font-size": "12px"}),
+    html.P("Last deployed on April 6, 2023",
+           style={"font-size": "12px"})
+           ]
 
 # Layout
-app.layout = dbc.Container([
+app.layout = html.Div([
     dbc.Row([
-        html.Title('Spotify Popularity Dashboard'),
-        html.Label('Select the genre you want to analyze:'),
-        genre_dropdown,
-        html.Label('Select the artists you want to analyze:'),
-        html.Br(),
-        artist_dropdown,
-        html.Label('Select the start and end year for the analysis:'),
-        html.Br(),
-        year_range_selector,
-        html.Br()
-    ]),
-    dbc.Row([
-        dbc.Col(
-            # [html.Label('Plots will go here'),
-           dbc.Row( [dbc.Col(html.Div(artist_time_chart)),
-            dbc.Col(html.Div(explicit_chart))
+        dbc.Col([
+            html.Div([
+                html.H1('Spotify Popularity Dashboard'),
+                html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
+                    style={"font-size": "16px"}),
+                html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
+                    style={"font-size": "12px"}),
+                html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
+                    target="_blank", style={"font-size": "12px"}),
+                html.P("Last deployed on April 6, 2023",
+                    style={"font-size": "12px"})
             ])
-        ),
-
-        dbc.Col(
-            summary_statistics, width=3
-        )
+        ], width=2, className="col-2", style={'margin-left': '5px'}),
+        dbc.Col([
+            dbc.Row([
+                dbc.Col([
+                    html.Label('Select the genre you want to analyze:'),
+                    genre_dropdown,
+                    html.Label('Select the artists you want to analyze:'),
+                    artist_dropdown,
+                    html.Label('Select the start and end year for the analysis:'),
+                    year_range_selector,
+                    html.Br()
+                ])
+            ]),
+            dbc.Row([
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(html.Div(artist_time_chart),  style={'width': '50%'}),
+                        dbc.Col(html.Div(explicit_chart),  style={'width': '50%'})
+                    ])
+                ])
+            ]),
+            dbc.Row([
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(html.Div(top5songs_barchart), style={'width': '50%'}),
+                        dbc.Col(html.Div(speechiness_chart), style={'width': '50%'})
+                    ])
+                ])
+            ])
+        ], width=7, className="col-7"),
+        dbc.Col([
+            summary_statistics
+        ], width=2, className="col-2")
     ])
 ])
+
+
 
 @app.callback(
     [Output('mean-danceability', 'children'),
@@ -148,35 +186,35 @@ def display_artist_tracks(selected_artists, start_year, end_year):
 
         card_mean_danceability = [
             dbc.CardHeader('Danceability', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_danceability, className='text-center')
+            dbc.CardBody(mean_danceability, className='text-center', style={'padding': '10px'})
         ]
         card_mean_energy = [
             dbc.CardHeader('Energy', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_energy, className='text-center')
+            dbc.CardBody(mean_energy, className='text-center', style={'padding': '10px'})
         ]
         card_mean_loudness = [
             dbc.CardHeader('Loudness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_loudness, className='text-center')
+            dbc.CardBody(mean_loudness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_speechiness = [
             dbc.CardHeader('Speechiness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_speechiness, className='text-center')
+            dbc.CardBody(mean_speechiness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_acousticness = [
             dbc.CardHeader('Acousticness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_acousticness, className='text-center')
+            dbc.CardBody(mean_acousticness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_instrumentalness = [
             dbc.CardHeader('Instrumentalness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_instrumentalness, className='text-center')
+            dbc.CardBody(mean_instrumentalness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_liveness = [
             dbc.CardHeader('Liveness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_liveness, className='text-center')
+            dbc.CardBody(mean_liveness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_valence = [
             dbc.CardHeader('Valence', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_valence, className='text-center')
+            dbc.CardBody(mean_valence, className='text-center', style={'padding': '10px'})
         ]
         
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
@@ -215,10 +253,12 @@ def update_time_chart(selected_artists, start_year, end_year):
                 axis=alt.Axis(format=''),
                 title='Release Year'),
         y=alt.Y('mean(popularity)', title='Popularity'),
-        color=alt.Color('artist', legend=alt.Legend(title="Artist")),
+        color=alt.Color('artist', legend=alt.Legend(title="Artist")).scale(scheme="greens"),
         tooltip=['artist', 'release_year', 'mean(popularity)']
     ).properties(
-        title='Artist Popularity Over Time'  # Add a title to the chart
+        title='Artist Popularity Over Time',
+        width=250,
+        height=200
     )
     chart = chart + chart.mark_line()
     return chart.to_dict()
@@ -258,18 +298,81 @@ def create_explicit_chart(selected_artists, start_year, end_year):
     merged_df['artist'] = merged_df['artist'].apply(lambda x: x.split()[0] if ' ' in x else x)
 
 
-    chart =  alt.Chart(merged_df).mark_bar().encode(
+    chart = alt.Chart(merged_df).mark_bar().encode(
         alt.X('song_type:N', axis=alt.Axis(title=None, labels=True, ticks=True)),
         alt.Y('popularity:Q', axis=alt.Axis(title='Mean Popularity', grid=False)),
-        color=alt.Color('song_type:N', legend=alt.Legend(title="Song Type")),
+        color=alt.Color('song_type:N', legend=alt.Legend(title="Song Type")).scale(scheme="greens"),
         column=alt.Column('artist:N', header=alt.Header(title=None, labelOrient='bottom'))
     ).configure_view(
         stroke='transparent'
-    ).properties(width = 20,
+    ).properties(
+        width = 20,
+        height = 200,
         title='Mean Popularity of Songs by Type and Artist'
     )
 
     return chart.to_dict()
+
+@app.callback(
+    Output("top5songs-barchart", 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+def update_top_songs_bar_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
+    fig = alt.Chart(tracks_df_filtered_top_five).mark_bar().encode(
+        y=alt.Y('popularity', title="Popularity"),
+        x=alt.X('name', axis=alt.Axis(labelAngle=-15), title='Song Name').sort('-y'),
+        color=alt.Color('artist', legend=None).scale(scheme="greens"),
+        tooltip=['artist','release_year']
+    ).properties(
+        title='Popularity of Top Songs',
+        width=350,
+        height=200
+    ).to_dict()
+    
+    return fig
+
+@app.callback(
+    Output('speechiness-chart', 'spec'),
+    [
+        Input('artists-dropdown', 'value'),
+        Input('start-year', 'value'),
+        Input('end-year', 'value')
+    ]
+)
+
+def update_speechiness_chart(selected_artists, start_year, end_year):
+    if selected_artists is None or start_year is None or end_year is None:
+        return {}
+    tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
+                                       (tracks_df['release_year'] >= start_year) &
+                                       (tracks_df['release_year'] <= end_year)]
+    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.7).encode(
+        x=alt.X('release_year', 
+                scale=alt.Scale(domain=[start_year, end_year]),
+                axis=alt.Axis(format=''),
+                title='Release Year'),
+        y=alt.Y('popularity', title='Popularity'),
+        color=alt.Color('speechiness_binned:N', legend=alt.Legend(title="Speechiness")).scale(scheme="greens"),
+        tooltip=['artist', 'name', 'release_year', 'popularity']
+    ).properties(
+        title='Popularity by Speechiness over Time',
+        width=250,
+        height=200
+    )
+    
+    fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_binned']).mark_line()
+
+    return fig.to_dict()
 
 # Run the app/dashboard
 if __name__ == '__main__':
