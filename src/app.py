@@ -65,28 +65,28 @@ summary_statistics = dbc.Col([
     html.H4('Song features (Mean)', className='text-center'),
     html.H5('Top 5 Popular Songs', className='text-center'),
     dbc.Row(
-        dbc.Card(id='mean-danceability', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-danceability', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-energy', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-loudness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-speechiness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-acousticness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-instrumentalness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-liveness', style={"border": 0}, outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence', style={"border": 0, "color" : "#1db954"}, outline=True)
+        dbc.Card(id='mean-valence', style={"border": 0}, outline=True)
     )
 ])
 milestone_blurb=[
@@ -186,35 +186,35 @@ def display_artist_tracks(selected_artists, start_year, end_year):
 
         card_mean_danceability = [
             dbc.CardHeader('Danceability', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_danceability, className='text-center')
+            dbc.CardBody(mean_danceability, className='text-center', style={'padding': '10px'})
         ]
         card_mean_energy = [
             dbc.CardHeader('Energy', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_energy, className='text-center')
+            dbc.CardBody(mean_energy, className='text-center', style={'padding': '10px'})
         ]
         card_mean_loudness = [
             dbc.CardHeader('Loudness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_loudness, className='text-center')
+            dbc.CardBody(mean_loudness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_speechiness = [
             dbc.CardHeader('Speechiness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_speechiness, className='text-center')
+            dbc.CardBody(mean_speechiness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_acousticness = [
             dbc.CardHeader('Acousticness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_acousticness, className='text-center')
+            dbc.CardBody(mean_acousticness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_instrumentalness = [
             dbc.CardHeader('Instrumentalness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_instrumentalness, className='text-center')
+            dbc.CardBody(mean_instrumentalness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_liveness = [
             dbc.CardHeader('Liveness', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_liveness, className='text-center')
+            dbc.CardBody(mean_liveness, className='text-center', style={'padding': '10px'})
         ]
         card_mean_valence = [
             dbc.CardHeader('Valence', style={"color" : "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_valence, className='text-center')
+            dbc.CardBody(mean_valence, className='text-center', style={'padding': '10px'})
         ]
         
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
