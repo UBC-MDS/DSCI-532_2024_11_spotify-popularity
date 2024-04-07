@@ -16,7 +16,7 @@ The plots will show the relationship between different insights for the given ge
 The features for top 5 popular songs will be displayed on the right side of the dashboard.
 
 ```
-<Demo gif here>
+https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity/blob/main/img/demo.gif
 ```
 
 ## Support
