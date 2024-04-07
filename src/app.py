@@ -253,10 +253,12 @@ def update_time_chart(selected_artists, start_year, end_year):
                 axis=alt.Axis(format=''),
                 title='Release Year'),
         y=alt.Y('mean(popularity)', title='Popularity'),
-        color=alt.Color('artist', legend=alt.Legend(title="Artist")),
+        color=alt.Color('artist', legend=alt.Legend(title="Artist")).scale(scheme="greens"),
         tooltip=['artist', 'release_year', 'mean(popularity)']
     ).properties(
-        title='Artist Popularity Over Time'  # Add a title to the chart
+        title='Artist Popularity Over Time',
+        width=250,
+        height=200
     )
     chart = chart + chart.mark_line()
     return chart.to_dict()
@@ -296,14 +298,16 @@ def create_explicit_chart(selected_artists, start_year, end_year):
     merged_df['artist'] = merged_df['artist'].apply(lambda x: x.split()[0] if ' ' in x else x)
 
 
-    chart =  alt.Chart(merged_df).mark_bar().encode(
+    chart = alt.Chart(merged_df).mark_bar().encode(
         alt.X('song_type:N', axis=alt.Axis(title=None, labels=True, ticks=True)),
         alt.Y('popularity:Q', axis=alt.Axis(title='Mean Popularity', grid=False)),
-        color=alt.Color('song_type:N', legend=alt.Legend(title="Song Type")),
+        color=alt.Color('song_type:N', legend=alt.Legend(title="Song Type")).scale(scheme="greens"),
         column=alt.Column('artist:N', header=alt.Header(title=None, labelOrient='bottom'))
     ).configure_view(
         stroke='transparent'
-    ).properties(width = 20,
+    ).properties(
+        width = 20,
+        height = 200,
         title='Mean Popularity of Songs by Type and Artist'
     )
 
@@ -324,13 +328,15 @@ def update_top_songs_bar_chart(selected_artists, start_year, end_year):
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
     tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
-    fig = alt.Chart(tracks_df_filtered_top_five, width='container').mark_bar().encode(
+    fig = alt.Chart(tracks_df_filtered_top_five).mark_bar().encode(
         y=alt.Y('popularity', title="Popularity"),
         x=alt.X('name', axis=alt.Axis(labelAngle=-15), title='Song Name').sort('-y'),
         color=alt.Color('artist', legend=None).scale(scheme="greens"),
         tooltip=['artist','release_year']
     ).properties(
-        title='Popularity of Top Songs'
+        title='Popularity of Top Songs',
+        width=350,
+        height=200
     ).to_dict()
     
     return fig
@@ -356,10 +362,12 @@ def update_speechiness_chart(selected_artists, start_year, end_year):
                 axis=alt.Axis(format=''),
                 title='Release Year'),
         y=alt.Y('popularity', title='Popularity'),
-        color=alt.Color('speechiness_binned:N', legend=alt.Legend(title="Speechiness")),
+        color=alt.Color('speechiness_binned:N', legend=alt.Legend(title="Speechiness")).scale(scheme="greens"),
         tooltip=['artist', 'name', 'release_year', 'popularity']
     ).properties(
-        title='Popularity by Speechiness over Time'
+        title='Popularity by Speechiness over Time',
+        width=250,
+        height=200
     )
     
     fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_binned']).mark_line()
