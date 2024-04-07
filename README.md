@@ -15,9 +15,7 @@ The plots will update based on the given inputs.
 The plots will show the relationship between different insights for the given genre and artist.
 The features for top 5 popular songs will be displayed on the right side of the dashboard.
 
-```
-https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity/blob/main/img/demo.gif
-```
+![Alt Text](./img/demo.gif)
 
 ## Support
 For any issues regarding running our dashboard or for feature requests, please contact us using [github issues](https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity/issues)
