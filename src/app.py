@@ -71,28 +71,28 @@ summary_statistics = dbc.Col([
     html.H4('Song features (Mean)', className='text-center', style={"color": 'white'}),
     html.H5('Top 5 Popular Songs', className='text-center', style={"color": 'white'}),
     dbc.Row(
-        dbc.Card(id='mean-danceability', style={"border": 0, "width": "300px"},className="mb-4 mx-auto", outline=True,)
+        dbc.Card(id='mean-danceability', style={"border": 0, "width": "75%"},className="mb-2 mx-auto", outline=True,)
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy', style={"border": 0, "width": "300px" }, className="mb-4 mx-auto", outline=True)
+        dbc.Card(id='mean-energy', style={"border": 0, "width": "75%" }, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness', style={"border": 0,"width": "300px"}, className="mb-4 mx-auto", outline=True)
+        dbc.Card(id='mean-loudness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness', style={"border": 0,"width": "300px"}, className="mb-4 mx-auto", outline=True)
+        dbc.Card(id='mean-speechiness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness', style={"border": 0,"width": "300px"}, className="mb-4 mx-auto", outline=True)
+        dbc.Card(id='mean-acousticness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness', style={"border": 0,"width": "300px"}, className="mb-4 mx-auto", outline=True)
+        dbc.Card(id='mean-instrumentalness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness', style={"border": 0,"width": "300px", "margin-left": "auto", "margin-right": "auto"}, outline=True,className="mb-4")
+        dbc.Card(id='mean-liveness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence', style={"border": 0,"width": "300px", "margin-left": "auto", "margin-right": "auto"}, outline=True)
+        dbc.Card(id='mean-valence', style={"border": 0,"width": "75%"},className="mb-2 mx-auto", outline=True)
     )
 ])
 milestone_blurb=[
@@ -143,19 +143,19 @@ app.layout = html.Div([
             dbc.Row([
                 dbc.Col([
                     dbc.Row([
-                        dbc.Col(html.Div(artist_time_chart), style={'width': '50%','background-color': 'white','margin-left': '50px'}),
-                        dbc.Col(html.Div(explicit_chart),  style={'width': '50%','background-color': 'white','margin-right': '50px'})
+                        dbc.Col(html.Div(artist_time_chart), style={'width': '45%','background-color': 'white', 'margin-left': '5%'}),
+                        dbc.Col(html.Div(explicit_chart),  style={'width': '45%','background-color': 'white',  'margin-right': '5%'})
                     ], style={'margin-top': '100px'})
                 ])
             ]),
             dbc.Row([
                 dbc.Col([
                     dbc.Row([
-                        dbc.Col(html.Div(top5songs_barchart), style={'width': '50%','background-color': 'white',
-                                                                     'margin-left': '50px',
+                        dbc.Col(html.Div(top5songs_barchart), style={'width': '45%','background-color': 'white',
+                                                                      'margin-left': '5%'
                                                                      }),
-                        dbc.Col(html.Div(speechiness_chart), style={'width': '50%','background-color': 'white', 
-                                                                    'margin-right': '50px',
+                        dbc.Col(html.Div(speechiness_chart), style={'width': '45%','background-color': 'white', 
+                                                                    'margin-right': '5%'
                                                                     }),  
                     ])
                 ])
