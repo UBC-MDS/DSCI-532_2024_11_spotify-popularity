@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output,callback_context
+from dash import Dash, html, dcc, Input, Output, callback_context
 import pandas as pd
 import dash_bootstrap_components as dbc
 import ast
@@ -6,7 +6,6 @@ import dash_vega_components as dvc
 import altair as alt
 from itertools import product
 from collections import Counter
-from dash.dependencies import Input, Output, State
 
 
 
@@ -115,13 +114,13 @@ app.layout = html.Div([
                 html.H1('Popularity', style={'color':'white', 'align-items': 'left','margin-left': '30px'}),
                 html.H1('Dashboard', style={'color':'white', 'align-items': 'left','margin-left': '30px'}),
                 html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
-                    style={"font-size": "16px",'color':'grey', 'margin-left': '15px'}),
+                    style={"font-size": "16px",'color':'#D3D3D3', 'margin-left': '15px'}),
                 html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
-                    style={"font-size": "12px",'color':'grey','margin-left': '15px'}),
+                    style={"font-size": "12px",'color':'#D3D3D3','margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
                     target="_blank", style={"font-size": "12px",'margin-left': '15px'}),
                 html.P("Last deployed on April 6, 2024",
-                    style={"font-size": "12px",'color':'grey','margin-left': '15px'})
+                    style={"font-size": "12px",'color':'#D3D3D3','margin-left': '15px'})
             ])
         ], style={'height': '100vh', 
                   'background-color': '#196543', 
