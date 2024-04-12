@@ -5,6 +5,7 @@ import ast
 import dash_vega_components as dvc
 import altair as alt
 from itertools import product
+from collections import Counter
 
 
 # Initiatlize the app
@@ -22,8 +23,11 @@ def convert_string_to_list(string):
         return []  
 
 tracks_df['genres'] = tracks_df['genres'].apply(convert_string_to_list)
-unique_genres = sorted(set(genre for sublist in tracks_df['genres'] for genre in sublist))
-genre_dropdown_options = [{'label': genre, 'value': genre} for genre in unique_genres]
+genres_exploded = tracks_df.explode('genres')
+genre_counts = genres_exploded['genres'].value_counts()
+
+
+genre_dropdown_options = [{'label': genre, 'value': genre} for genre in genre_counts.index]
 
 # Configuration
 genre_dropdown = dcc.Dropdown(
