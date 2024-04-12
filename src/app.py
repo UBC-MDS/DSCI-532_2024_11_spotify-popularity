@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc, Input, Output, callback_context
 import pandas as pd
 import dash_bootstrap_components as dbc
 import ast
@@ -6,6 +6,8 @@ import dash_vega_components as dvc
 import altair as alt
 from itertools import product
 from collections import Counter
+
+
 
 
 # Initiatlize the app
@@ -123,9 +125,9 @@ app.layout = html.Div([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Label('Select the genre you want to analyze:'),
+                    html.Label('Select one genre you want to analyze:'),
                     genre_dropdown,
-                    html.Label('Select the artists you want to analyze:'),
+                    html.Label('Select up to five artists you want to analyze:'),
                     artist_dropdown,
                     html.Label('Select the start and end year for the analysis:'),
                     year_range_selector,
@@ -236,6 +238,25 @@ def update_artist_dropdown(selected_genres):
     artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
     return artist_options
 
+
+@app.callback(
+    Output('artists-dropdown', 'value'),
+    [Input('artists-dropdown', 'value')]
+)
+def limit_artists(selected_artists):
+    if selected_artists is None:
+        return []
+    
+    if len(selected_artists) > 5:
+        return selected_artists[:5]
+    
+    return selected_artists
+
+
+
+
+
+
 @app.callback(
     Output('artist-time-chart', 'spec'),
     [
@@ -246,24 +267,32 @@ def update_artist_dropdown(selected_genres):
 )
 
 def update_time_chart(selected_artists, start_year, end_year):
+    hex_color_scale = ['80ED99', '#57CC99', '#438A70', '#11999E','#3C3C3C']
+
     if selected_artists is None or start_year is None or end_year is None:
         return {}
     tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
-    chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.7).encode(
+    
+
+    chart = alt.Chart(tracks_df_filtered).mark_point().encode(
         x=alt.X('release_year', 
                 scale=alt.Scale(domain=[start_year, end_year]),
                 axis=alt.Axis(format=''),
                 title='Release Year'),
         y=alt.Y('mean(popularity)', title='Popularity'),
-        color=alt.Color('artist', legend=alt.Legend(title="Artist")).scale(scheme="greens"),
+        color=alt.Color('artist', scale=alt.Scale(
+        domain=selected_artists,  
+        range=['#FFEEAF','#A8CD9F', '#57CC99', '#438A70', '#12372A']),  
+        legend=alt.Legend(title="Artist")),
         tooltip=['artist', 'release_year', 'mean(popularity)']
     ).properties(
         title='Artist Popularity Over Time',
         width=250,
         height=200
     )
+
     chart = chart + chart.mark_line()
     return chart.to_dict()
 
