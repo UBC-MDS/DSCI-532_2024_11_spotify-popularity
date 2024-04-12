@@ -9,7 +9,6 @@ from collections import Counter
 
 
 
-
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -68,31 +67,31 @@ speechiness_chart = dvc.Vega(id='speechiness-chart', spec={})
 
 summary_statistics = dbc.Col([
     html.Br(),
-    html.H4('Song features (Mean)', className='text-center'),
-    html.H5('Top 5 Popular Songs', className='text-center'),
+    html.H4('Song features (Mean)', className='text-center', style={"color": 'white'}),
+    html.H5('Top 5 Popular Songs', className='text-center', style={"color": 'white'}),
     dbc.Row(
-        dbc.Card(id='mean-danceability', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-danceability', style={"border": 0, "width": "75%"},className="mb-2 mx-auto", outline=True,)
     ),
     dbc.Row(
-        dbc.Card(id='mean-energy', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-energy', style={"border": 0, "width": "75%" }, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-loudness', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-loudness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-speechiness', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-speechiness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-acousticness', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-acousticness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-instrumentalness', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-instrumentalness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-liveness', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-liveness', style={"border": 0,"width": "75%"}, className="mb-2 mx-auto", outline=True)
     ),
     dbc.Row(
-        dbc.Card(id='mean-valence', style={"border": 0}, outline=True)
+        dbc.Card(id='mean-valence', style={"border": 0,"width": "75%"},className="mb-2 mx-auto", outline=True)
     )
 ])
 milestone_blurb=[
@@ -111,17 +110,23 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col([
             html.Div([
-                html.H1('Spotify Popularity Dashboard'),
+                html.H1('Spotify', style={'color':'white','align-items': 'left','margin-left': '30px'}),
+                html.H1('Popularity', style={'color':'white', 'align-items': 'left','margin-left': '30px'}),
+                html.H1('Dashboard', style={'color':'white', 'align-items': 'left','margin-left': '30px'}),
                 html.P("This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
-                    style={"font-size": "16px"}),
+                    style={"font-size": "16px",'color':'#D3D3D3', 'margin-left': '15px'}),
                 html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
-                    style={"font-size": "12px"}),
+                    style={"font-size": "12px",'color':'#D3D3D3','margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
-                    target="_blank", style={"font-size": "12px"}),
-                html.P("Last deployed on April 6, 2023",
-                    style={"font-size": "12px"})
+                    target="_blank", style={"font-size": "12px",'margin-left': '15px'}),
+                html.P("Last deployed on April 6, 2024",
+                    style={"font-size": "12px",'color':'#D3D3D3','margin-left': '15px'})
             ])
-        ], width=2, className="col-2", style={'margin-left': '5px'}),
+        ], style={'height': '100vh', 
+                  'background-color': '#196543', 
+                  'display': 'flex',
+                    'flex-direction': 'column', 
+                    'justify-content': 'center'}),
         dbc.Col([
             dbc.Row([
                 dbc.Col([
@@ -137,23 +142,27 @@ app.layout = html.Div([
             dbc.Row([
                 dbc.Col([
                     dbc.Row([
-                        dbc.Col(html.Div(artist_time_chart),  style={'width': '50%'}),
-                        dbc.Col(html.Div(explicit_chart),  style={'width': '50%'})
-                    ])
+                        dbc.Col(html.Div(artist_time_chart), style={'width': '45%','background-color': 'white', 'margin-left': '5%'}),
+                        dbc.Col(html.Div(explicit_chart),  style={'width': '45%','background-color': 'white',  'margin-right': '5%'})
+                    ], style={'margin-top': '100px'})
                 ])
             ]),
             dbc.Row([
                 dbc.Col([
                     dbc.Row([
-                        dbc.Col(html.Div(top5songs_barchart), style={'width': '50%'}),
-                        dbc.Col(html.Div(speechiness_chart), style={'width': '50%'})
+                        dbc.Col(html.Div(top5songs_barchart), style={'width': '45%','background-color': 'white',
+                                                                      'margin-left': '5%'
+                                                                     }),
+                        dbc.Col(html.Div(speechiness_chart), style={'width': '45%','background-color': 'white', 
+                                                                    'margin-right': '5%'
+                                                                    }),  
                     ])
                 ])
             ])
-        ], width=7, className="col-7"),
+        ], width=7, className="col-7",style={'background-color': '#24BA56'}),
         dbc.Col([
             summary_statistics
-        ], width=2, className="col-2")
+        ], width=2, className="col-2", style={'background-color': '#196543'})
     ])
 ])
 
