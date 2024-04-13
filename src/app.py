@@ -130,12 +130,14 @@ app.layout = html.Div([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Label('Select one genre you want to analyze:'),
-                    genre_dropdown,
-                    html.Label('Select up to five artists you want to analyze:'),
-                    artist_dropdown,
-                    html.Label('Select the start and end year for the analysis:'),
-                    year_range_selector,
+                    html.Div([
+                        html.Label('Select one genre you want to analyze:'),
+                        genre_dropdown,
+                        html.Label('Select up to five artists you want to analyze:'),
+                        artist_dropdown,
+                        html.Label('Select the start and end year for the analysis:'),
+                        year_range_selector,
+                    ], style={'margin-top': '10px'}),
                     html.Br()
                 ])
             ]),
