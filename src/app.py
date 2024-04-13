@@ -398,13 +398,14 @@ def update_speechiness_chart(selected_artists, start_year, end_year):
     tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
+    tracks_df_filtered['speechiness_label'] = tracks_df_filtered['speechiness_binned'].map({0: 'Low', 1: 'High'})
     chart = alt.Chart(tracks_df_filtered).mark_point(opacity=0.7).encode(
         x=alt.X('release_year', 
                 scale=alt.Scale(domain=[start_year, end_year]),
                 axis=alt.Axis(format=''),
                 title='Release Year'),
         y=alt.Y('popularity', title='Popularity'),
-        color=alt.Color('speechiness_binned:N', legend=alt.Legend(title="Speechiness")).scale(scheme="greens"),
+        color=alt.Color('speechiness_label:N', legend=alt.Legend(title="Speechiness")).scale(scheme="greens"),
         tooltip=['artist', 'name', 'release_year', 'popularity']
     ).properties(
         title='Popularity by Speechiness over Time',
@@ -412,7 +413,7 @@ def update_speechiness_chart(selected_artists, start_year, end_year):
         height=200
     )
     
-    fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_binned']).mark_line()
+    fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_label']).mark_line()
 
     return fig.to_dict()
 
