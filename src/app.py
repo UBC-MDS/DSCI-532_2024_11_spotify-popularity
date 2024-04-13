@@ -31,34 +31,69 @@ genre_counts = genres_exploded['genres'].value_counts()
 genre_dropdown_options = [{'label': genre, 'value': genre} for genre in genre_counts.index]
 
 # Configuration
-genre_dropdown = dcc.Dropdown(
-    options= genre_dropdown_options,
-    multi=False,
-    placeholder='Select a genre...',
-    id='genre-dropdown'
+dropdown_style = {'margin-top': '20px'}
+
+genre_dropdown = html.Div(
+    dcc.Dropdown(
+        options= genre_dropdown_options,
+        multi=False,
+        placeholder='Select a genre...',
+        id='genre-dropdown'
+    ),
+    style=dropdown_style
 )
-artist_dropdown = dcc.Dropdown(
-    options=tracks_df['artist'].unique(),
-    multi=True,
-    placeholder='Select multiple artists...',
-    id='artists-dropdown'
+
+artist_dropdown = html.Div(
+    dcc.Dropdown(
+        options=tracks_df['artist'].unique(),
+        multi=True,
+        placeholder='Select multiple artists...',
+        id='artists-dropdown'
+    ),
+    style=dropdown_style
 )
+
+start_year_dropdown = html.Div(
+    dcc.Dropdown(
+        options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
+        multi=False,
+        placeholder='Select the start year...',
+        id='start-year'
+    ),
+    style=dropdown_style
+)
+
+end_year_dropdown = html.Div(
+    dcc.Dropdown(
+        options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
+        multi=False,
+        placeholder='Select the end year...',
+        id='end-year'
+    ),
+    style=dropdown_style
+)
+
 year_range_selector = dbc.Row([
-    dbc.Col(
-        dcc.Dropdown(
-            options=sorted(tracks_df['release_year'].unique()),
-            multi=False,
-            placeholder='Select the start year...',
-            id='start-year'
-        )),
-    dbc.Col(
-        dcc.Dropdown(
-            options=sorted(tracks_df['release_year'].unique()),
-            multi=False,
-            placeholder='Select the end year...',
-            id='end-year'
-        ))
+    dbc.Col(start_year_dropdown),
+    dbc.Col(end_year_dropdown)
 ])
+
+# year_range_selector = dbc.Row([
+#     dbc.Col(
+#         dcc.Dropdown(
+#             options=sorted(tracks_df['release_year'].unique()),
+#             multi=False,
+#             placeholder='Select the start year...',
+#             id='start-year'
+#         )),
+#     dbc.Col(
+#         dcc.Dropdown(
+#             options=sorted(tracks_df['release_year'].unique()),
+#             multi=False,
+#             placeholder='Select the end year...',
+#             id='end-year'
+#         ))
+# ])
 
 artist_time_chart =  dvc.Vega(id='artist-time-chart', spec={})
 explicit_chart = dvc.Vega(id='explicit-chart', spec={})
