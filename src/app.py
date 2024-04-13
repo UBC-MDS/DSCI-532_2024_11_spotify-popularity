@@ -34,41 +34,40 @@ genre_dropdown_options = [{'label': genre, 'value': genre} for genre in genre_co
 dropdown_style = {'margin-top': '20px'}
 
 genre_dropdown = html.Div([
-    html.Label('Select a genre...'),
+    html.Label('Select one genre you want to analyze:'),
     dcc.Dropdown(
         options= genre_dropdown_options,
         multi=False,
-        #placeholder='Select a genre...',
+        placeholder='Select a genre...',
         id='genre-dropdown'
     )
 ], style=dropdown_style)
 
 artist_dropdown = html.Div([
-    html.Label('Select multiple artists...'),
+    html.Label('Select up to five artists you want to analyze:'),
     dcc.Dropdown(
         options=tracks_df['artist'].unique(),
         multi=True,
-        #placeholder='Select multiple artists...',
+        placeholder='Select multiple artists...',
         id='artists-dropdown'
     )
 ], style=dropdown_style)
 
 start_year_dropdown = html.Div([
-    html.Label('Select the start year...'),
+    html.Label('Select the start and end year for the analysis:'),
     dcc.Dropdown(
         options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
         multi=False,
-        #placeholder='Select the start year...',
+        placeholder='Select the start year...',
         id='start-year'
     )
 ], style=dropdown_style)
 
 end_year_dropdown = html.Div([
-    html.Label('Select the end year...'),
     dcc.Dropdown(
         options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
         multi=False,
-        #placeholder='Select the end year...',
+        placeholder='Select the end year...',
         id='end-year'
     )
 ], style=dropdown_style)
