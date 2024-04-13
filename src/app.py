@@ -303,6 +303,8 @@ def update_time_chart(selected_artists, start_year, end_year):
     )
 
     chart = chart + chart.mark_line()
+    chart = chart.configure(actions=False)
+
     return chart.to_dict()
 
 
@@ -352,6 +354,7 @@ def create_explicit_chart(selected_artists, start_year, end_year):
         height = 200,
         title='Mean Popularity of Songs by Type and Artist'
     )
+    chart = chart.configure(actions=False)
 
     return chart.to_dict()
 
@@ -380,6 +383,8 @@ def update_top_songs_bar_chart(selected_artists, start_year, end_year):
         width=350,
         height=200
     ).to_dict()
+    
+    fig = fig.configure(actions=False)
     
     return fig
 
@@ -413,6 +418,7 @@ def update_speechiness_chart(selected_artists, start_year, end_year):
     )
     
     fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_binned']).mark_line()
+    fig = fig.configure(actions=False)
 
     return fig.to_dict()
 
