@@ -31,51 +31,63 @@ genre_counts = genres_exploded['genres'].value_counts()
 genre_dropdown_options = [{'label': genre, 'value': genre} for genre in genre_counts.index]
 
 # Configuration
-dropdown_style = {'margin-top': '20px'}
+dropdown_style = {'margin-top': '10px', 'margin-bottom': '10px'}
 
-genre_dropdown = html.Div([
-    html.Label('Select one genre you want to analyze:'),
-    dcc.Dropdown(
-        options= genre_dropdown_options,
-        multi=False,
-        placeholder='Select a genre...',
-        id='genre-dropdown'
-    )
-], style=dropdown_style)
+genre_dropdown = html.Div(
+    [
+        html.Label('Select one genre you want to analyze:', className='mb-1'),
+        dcc.Dropdown(
+            options=genre_dropdown_options,
+            multi=False,
+            placeholder='Select a genre...',
+            id='genre-dropdown'
+        ),
+    ],
+    style=dropdown_style
+)
 
-artist_dropdown = html.Div([
-    html.Label('Select up to five artists you want to analyze:'),
-    dcc.Dropdown(
-        options=tracks_df['artist'].unique(),
-        multi=True,
-        placeholder='Select multiple artists...',
-        id='artists-dropdown'
-    )
-], style=dropdown_style)
+artist_dropdown = html.Div(
+    [
+        html.Label('Select up to five artists you want to analyze:', className='mb-1'),
+        dcc.Dropdown(
+            options=[{'label': artist, 'value': artist} for artist in tracks_df['artist'].unique()],
+            multi=True,
+            placeholder='Select multiple artists...',
+            id='artists-dropdown'
+        ),
+    ],
+    style=dropdown_style
+)
 
-start_year_dropdown = html.Div([
-    html.Label('Select the start and end year for the analysis:'),
-    dcc.Dropdown(
-        options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
-        multi=False,
-        placeholder='Select the start year...',
-        id='start-year'
-    )
-], style=dropdown_style)
-
-end_year_dropdown = html.Div([
-    dcc.Dropdown(
-        options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
-        multi=False,
-        placeholder='Select the end year...',
-        id='end-year'
-    )
-], style=dropdown_style)
-
-year_range_selector = dbc.Row([
-    dbc.Col(start_year_dropdown),
-    dbc.Col(end_year_dropdown)
-])
+year_range_selector = dbc.Row(
+    [
+        dbc.Col(
+            [
+                html.Label('Select the start year for the analysis:', className='mb-1'),
+                dcc.Dropdown(
+                    options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
+                    multi=False,
+                    placeholder='Select the start year...',
+                    id='start-year'
+                ),
+            ],
+            style=dropdown_style
+        ),
+        dbc.Col(
+            [
+                html.Label('Select the end year for the analysis:', className='mb-1'),
+                dcc.Dropdown(
+                    options=[{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique())],
+                    multi=False,
+                    placeholder='Select the end year...',
+                    id='end-year'
+                ),
+            ],
+            style=dropdown_style
+        ),
+    ],
+    no_gutters=True
+)
 
 # year_range_selector = dbc.Row([
 #     dbc.Col(
@@ -164,11 +176,11 @@ app.layout = html.Div([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Label('Select one genre you want to analyze:'),
+                    #html.Label('Select one genre you want to analyze:'),
                     genre_dropdown,
-                    html.Label('Select up to five artists you want to analyze:'),
+                    #html.Label('Select up to five artists you want to analyze:'),
                     artist_dropdown,
-                    html.Label('Select the start and end year for the analysis:'),
+                    #html.Label('Select the start and end year for the analysis:'),
                     year_range_selector,
                     html.Br()
                 ])
