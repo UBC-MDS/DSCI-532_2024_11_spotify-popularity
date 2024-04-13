@@ -303,6 +303,7 @@ def update_time_chart(selected_artists, start_year, end_year):
     )
 
     chart = chart + chart.mark_line()
+    chart = chart.configure(actions=False)
     return chart.to_dict()
 
 
