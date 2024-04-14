@@ -1,0 +1,11 @@
+# Milestone 3 Reflection
+
+Since our last milestone served as an initial draft of our dashboard, we used this week to implement the functionality that we did not get to in our previous release. 
+
+One improvement that we addressed was to rank the genres in the drop down by relevance. Prior to this milestone, the dropdown list of genres was sorted alphabetically. As such, even when looking for the “pop” genre, we would need to sift through, alphabetically, all of the genres that include pop in its name. Now, we facilitate this search process by sorting the genre categories by count so that those more relevant genres are higher on the dropdown. Additionally, to make the user experience more intuitive, we added to our original sketch and added a ‘Plot’ button to trigger the plot refresh after updating all of the filters. 
+
+Also, to help kickstart the user’s experience with our dashboard, we added a default view with the dashboard pre-populated to the “pop” genre, analyzing Taylor Swift, Ed Sheeran, The Weeknd, and Justin Bieber from 2010 to 2021. Since our dashboard is designed to help record companies provide actionable suggestions that can be used as guidance for artists, we added the option to select a single artist to use as comparison. Should this option be selected, this artist is included in all four plots and highlighted in the summary statistics as a point of reference for the mean statistics of the other selected artists.  
+
+Lastly, we added some minor aesthetic improvements to the dashboard including adding more green to frame the dashboard as illustrated in our sketch. We also improved readability by increasing the margins and removing the ellipses around the plots. In terms of the plots, we also adjusted the Popularity by Speechless legend such that the levels are Low, Medium, and High rather than numerical values.
+
+Compared to our last release, our dashboard now more closely resembles our sketch and the user experience is more intuitive. For our next milestone, we will address the feedback from our classmates from this week such as tooltip descriptions to support our figures, and adjusting the proportions to highlight the plots. These tooltips will clarify more niche music terms such as speechiness and valence to better communicate the numbers to the reader.
