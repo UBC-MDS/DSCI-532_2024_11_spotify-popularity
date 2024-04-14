@@ -1,4 +1,5 @@
 from dash import Dash, html, Input, Output
+import dash
 import pandas as pd
 import dash_bootstrap_components as dbc
 import altair as alt
@@ -370,7 +371,6 @@ def update_speechiness_chart(selected_artists, start_year, end_year, n_clicks):
 
 # Run the app/dashboard
 if __name__ == '__main__':
-    import dash
 
     print("dash version=", dash.__version__)
     app.run(debug=True)
