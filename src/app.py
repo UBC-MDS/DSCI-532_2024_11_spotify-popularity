@@ -60,7 +60,7 @@ app.layout = html.Div([
                                 style={'width': '45%', 'background-color': 'white', 'margin-left': '5%'}),
                         dbc.Col(html.Div(cmp.explicit_chart),
                                 style={'width': '45%', 'background-color': 'white', 'margin-right': '5%'})
-                    ], style={'margin-top': '100px'})
+                    ], style={'margin-top': '1%'})
                 ])
             ]),
             dbc.Row([
