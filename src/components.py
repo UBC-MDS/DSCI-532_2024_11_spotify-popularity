@@ -1,7 +1,7 @@
 from dash import html, dcc
 import pandas as pd
 import dash_bootstrap_components as dbc
-import utils as ut
+import src.utils as ut
 import dash_vega_components as dvc
 
 

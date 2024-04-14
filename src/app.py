@@ -4,8 +4,8 @@ import dash_bootstrap_components as dbc
 import altair as alt
 from itertools import product
 from dash.exceptions import PreventUpdate
-import components as cmp
-from components import tracks_df
+import src.components as cmp
+from src.components import tracks_df
 
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
