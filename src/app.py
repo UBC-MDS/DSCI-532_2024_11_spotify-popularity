@@ -5,6 +5,9 @@ import dash_bootstrap_components as dbc
 import altair as alt
 from itertools import product
 from dash.exceptions import PreventUpdate
+import os
+import sys
+sys.path.insert(1, os.path.dirname(sys.path[0]))
 import src.components as cmp
 from src.components import tracks_df
 
