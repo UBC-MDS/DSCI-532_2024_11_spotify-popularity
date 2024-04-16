@@ -44,10 +44,10 @@ app.layout = html.Div([
                     html.Div([
                         html.Label('Select one genre you want to analyze:'),
                         cmp.genre_dropdown,
-                        html.Label('Select up to five artists you want to analyze:'),
-                        cmp.artist_dropdown,
                         html.Label('Select the start and end year for the analysis:'),
                         cmp.year_range_selector,
+                        html.Label('Select up to five artists you want to analyze:'),
+                        cmp.artist_dropdown,
                         html.Label('Select an artist to compare (optional):'),
                         dbc.Row([
                             dbc.Col([cmp.optional_artist_selector_dropdown]),
@@ -181,14 +181,37 @@ def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdo
 
 @app.callback(
     Output('artists-dropdown', 'options'),
-    [Input('genre-dropdown', 'value')]
+    [Input('genre-dropdown', 'value'),
+     Input('start-year', 'value'),
+     Input('end-year', 'value')]
 )
-def update_artist_dropdown(selected_genres):
-    if not selected_genres:
+def update_artist_dropdown(selected_genres,start_year, end_year):
+    if not selected_genres or not start_year or not end_year:
         return []
     filtered_artists = tracks_df[tracks_df['genres'].apply(lambda x: any(genre in selected_genres for genre in x))]
+    filtered_artists = filtered_artists[(filtered_artists['release_year'] >= start_year) & (filtered_artists['release_year'] <= end_year)]
     artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
     return artist_options
+
+
+@app.callback(
+    Output('start-year', 'options'),
+    [Input('end-year', 'value')]
+)
+def update_start_year_dropdown(end_year):
+    if end_year is None:
+        return []
+    return [{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique().tolist()) if year <= end_year]
+
+
+@app.callback(
+    Output('end-year', 'options'),
+    [Input('start-year', 'value')]
+)
+def update_start_year_dropdown(start_year):
+    if start_year is None:
+        return []
+    return [{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique().tolist()) if year >= start_year]
 
 
 @app.callback(
