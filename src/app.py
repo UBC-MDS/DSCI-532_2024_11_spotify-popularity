@@ -79,10 +79,10 @@ app.layout = html.Div([
                     ])
                 ])
             ])
-        ], width=8, className="col-7", style={'background-color': '#24BA56'}),
+        ], width=8, style={'background-color': '#24BA56'}),
         dbc.Col([
             cmp.summary_statistics
-        ], width=2, className="col-2", style={'background-color': '#196543'})
+        ], width=2, style={'background-color': '#196543'})
     ])
 ])
 
