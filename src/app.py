@@ -20,12 +20,12 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col([
             html.Div([
-                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
+                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
                 html.P(
                     "This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
-                    style={"font-size": "16px", 'color': '#D3D3D3', 'margin-left': '15px'}),
+                    style={"font-size": "15px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
