@@ -229,9 +229,9 @@ def update_time_chart(selected_artists, start_year, end_year, artists_dropdown_c
                                    (tracks_df['release_year'] <= end_year)]
 
     chart = alt.Chart(tracks_df_filtered).mark_point().encode(
-        x=alt.X('release_year:Q',
+        x=alt.X('release_year:O',
                 scale=alt.Scale(domain=[start_year, end_year]),
-                axis=alt.Axis(format='0'),
+                axis=alt.Axis(values=list(range(start_year, end_year + 1)), labelAngle=0)),
                 title='Release Year'),
         y=alt.Y('mean(popularity)', title='Popularity'),
         color=alt.Color('artist', scale=alt.Scale(
