@@ -33,7 +33,7 @@ app.layout = html.Div([
                 html.P("Last deployed on April 6, 2024",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'})
             ])
-        ], style={'height': '100vh',
+        ], width=2, style={'height': '100vh',
                   'background-color': '#196543',
                   'display': 'flex',
                   'flex-direction': 'column',
@@ -79,7 +79,7 @@ app.layout = html.Div([
                     ])
                 ])
             ])
-        ], width=7, className="col-7", style={'background-color': '#24BA56'}),
+        ], width=8, className="col-7", style={'background-color': '#24BA56'}),
         dbc.Col([
             cmp.summary_statistics
         ], width=2, className="col-2", style={'background-color': '#196543'})
