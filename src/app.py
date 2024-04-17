@@ -22,7 +22,7 @@ app.layout = html.Div([
             html.Div([
                 html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
                 html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
-                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px', 'margin-bottom': '30px'}),
                 html.P(
                     "This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
                     style={"font-size": "15px", 'color': '#D3D3D3', 'margin-left': '15px'}),
@@ -30,11 +30,10 @@ app.layout = html.Div([
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
                        target="_blank", style={"font-size": "12px", 'margin-left': '15px'}),
-                html.P("Last deployed on April 6, 2024",
+                html.P("Last deployed on April 16, 2024",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'})
             ])
-        ], width=2, style={'height': '100vh',
-                  'background-color': '#196543',
+        ], width=2, style={'background-color': '#196543',
                   'display': 'flex',
                   'flex-direction': 'column',
                   'justify-content': 'center'}),
