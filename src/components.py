@@ -59,9 +59,9 @@ summary_statistics = dbc.Col([
     html.Br(),
     html.H4('Song features (Mean)', className='text-center', style={"color": 'white'}),
     html.H5('Top 5 Popular Songs', id='top-five-title', className='text-center', style={"color": 'white'}),
-    dbc.Row(
-        dbc.Card(id='mean-danceability', style={"border": 0, "width": "75%"},className="mb-2 mx-auto", outline=True,)
-    ),
+    dbc.Row([
+        dbc.Card(id='mean-danceability', style={"border": 0, "width": "75%"},className="mb-2 mx-auto", outline=True,),
+]),
     dbc.Row(
         dbc.Card(id='mean-energy', style={"border": 0, "width": "75%" }, className="mb-2 mx-auto", outline=True)
     ),
