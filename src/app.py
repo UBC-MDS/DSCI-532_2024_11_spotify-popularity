@@ -20,21 +20,20 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col([
             html.Div([
-                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
+                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px', 'margin-bottom': '30px'}),
                 html.P(
                     "This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
-                    style={"font-size": "16px", 'color': '#D3D3D3', 'margin-left': '15px'}),
+                    style={"font-size": "15px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
                        target="_blank", style={"font-size": "12px", 'margin-left': '15px'}),
-                html.P("Last deployed on April 6, 2024",
+                html.P("Last deployed on April 16, 2024",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'})
             ])
-        ], style={'height': '100vh',
-                  'background-color': '#196543',
+        ], width=2, style={'background-color': '#196543',
                   'display': 'flex',
                   'flex-direction': 'column',
                   'justify-content': 'center'}),
@@ -79,12 +78,12 @@ app.layout = html.Div([
                     ])
                 ])
             ])
-        ], width=7, className="col-7", style={'background-color': '#24BA56'}),
+        ], width=8, style={'background-color': '#24BA56'}),
         dbc.Col([
             cmp.summary_statistics
-        ], width=2, className="col-2", style={'background-color': '#196543'})
-    ])
-])
+        ], width=2, style={'background-color': '#196543'}),
+    ], style={'min-height': '100vh', 'margin': '0', 'overflow': 'hidden'}),
+], style={'height': '100vh', 'margin': '0'})
 
 
 @app.callback(
