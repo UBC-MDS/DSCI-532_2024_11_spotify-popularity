@@ -56,28 +56,7 @@ app.layout = html.Div([
                     html.Br()
                 ])
             ]),
-            dbc.Row([
-                dbc.Col([
-                    dbc.Row([
-                        dbc.Col(html.Div(cmp.artist_time_chart),
-                                style={'width': '45%', 'background-color': 'white', 'margin-left': '5%'}),
-                        dbc.Col(html.Div(cmp.explicit_chart),
-                                style={'width': '45%', 'background-color': 'white', 'margin-right': '5%'})
-                    ], style={'margin-top': '1%'})
-                ])
-            ]),
-            dbc.Row([
-                dbc.Col([
-                    dbc.Row([
-                        dbc.Col(html.Div(cmp.top5songs_barchart), style={'width': '45%', 'background-color': 'white',
-                                                                         'margin-left': '5%'
-                                                                         }),
-                        dbc.Col(html.Div(cmp.speechiness_chart), style={'width': '45%', 'background-color': 'white',
-                                                                        'margin-right': '5%'
-                                                                        }),
-                    ])
-                ])
-            ])
+            cmp.plot_layout
         ], width=8, style={'background-color': '#24BA56'}),
         dbc.Col([
             cmp.summary_statistics
@@ -241,9 +220,9 @@ def update_time_chart(selected_artists, start_year, end_year, artists_dropdown_c
                         legend=alt.Legend(title="Artist")),
         tooltip=['artist', 'release_year', 'mean(popularity)']
     ).properties(
-        title='Artist Popularity Over Time',
+        # # title='Artist Popularity Over Time',
         width=250,
-        height=200
+        height=180
     )
 
     chart = chart + chart.mark_line()
@@ -287,17 +266,23 @@ def create_explicit_chart(selected_artists, start_year, end_year, artists_dropdo
     merged_df['artist'] = merged_df['artist'].apply(lambda x: x.split()[0] if ' ' in x else x)
 
     chart = alt.Chart(merged_df).mark_bar().encode(
-        alt.X('song_type:N', axis=alt.Axis(title=None, labels=True, ticks=True)),
+        alt.X('song_type:N', axis=alt.Axis(title=None, labels=True, ticks=True), 
+                             sort=alt.SortArray(['Clean', 'Explicit']), 
+                             scale=alt.Scale(domain=['Clean', 'Explicit'])),
         alt.Y('popularity:Q', axis=alt.Axis(title='Mean Popularity', grid=False)),
         color=alt.Color('song_type:N', legend=alt.Legend(title="Song Type")).scale(scheme="greens"),
         column=alt.Column('artist:N', header=alt.Header(title=None, labelOrient='bottom'))
     ).configure_view(
         stroke='transparent'
     ).properties(
-        width=20,
-        height=200,
-        title='Mean Popularity of Songs by Type and Artist'
-    )
+        width=25,
+        height=170,
+        # title='Mean Popularity of Songs by Type and Artist'
+    ).transform_calculate(
+    adjusted_song_type=alt.expr.if_(alt.datum.song_type == 'Clean', 'C', 'E')
+).encode(
+    x=alt.X('adjusted_song_type:N', axis=alt.Axis(title=None, labels=True, ticks=True, labelAngle=0)),
+)
 
     return chart.to_dict()
 
@@ -327,9 +312,9 @@ def update_top_songs_bar_chart(selected_artists, start_year, end_year, n_clicks)
         color=alt.Color('artist', legend=None).scale(scheme="greens"),
         tooltip=['artist', 'release_year']
     ).properties(
-        title='Popularity of Top Songs',
+        # title='Popularity of Top Songs',
         width=350,
-        height=200
+        height=166
     ).to_dict()
 
     return fig
@@ -366,9 +351,9 @@ def update_speechiness_chart(selected_artists, start_year, end_year, n_clicks):
         color=alt.Color('speechiness_label:N', legend=alt.Legend(title="Speechiness")).scale(scheme="greens"),
         tooltip=['artist', 'name', 'release_year', 'popularity']
     ).properties(
-        title='Popularity by Speechiness over Time',
-        width=250,
-        height=200
+        # title='Popularity by Speechiness over Time',
+        width=200,
+        height=180
     )
 
     fig = chart + chart.transform_regression('release_year', 'popularity', groupby=['speechiness_label']).mark_line()
