@@ -109,70 +109,66 @@ def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdo
     if selected_artists is None or start_year is None or end_year is None:
         return "", "", "", "", "", "", "", "", "Top 5 Popular Songs"
     else:
+        up_arrow = "\u2191"
+        down_arrow = "\u2193"
         tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
         tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
 
-        mean_danceability = "{:.3g}".format(tracks_df_filtered_top_five['danceability'].mean())
-        mean_energy = "{:.3g}".format(tracks_df_filtered_top_five['energy'].mean())
-        mean_loudness = "{:.3g}".format(tracks_df_filtered_top_five['loudness'].mean())
-        mean_speechiness = "{:.3g}".format(tracks_df_filtered_top_five['speechiness'].mean())
-        mean_acousticness = "{:.3g}".format(tracks_df_filtered_top_five['acousticness'].mean())
-        mean_instrumentalness = "{:.3g}".format(tracks_df_filtered_top_five['instrumentalness'].mean())
-        mean_liveness = "{:.3g}".format(tracks_df_filtered_top_five['liveness'].mean())
-        mean_valence = "{:.3g}".format(tracks_df_filtered_top_five['valence'].mean())
-        top_five_title = f"Top 5 Popular Songs"
+        format_string = "{:.3g}"
+        stats_dict = {}
+        stats = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness',
+                 'valence']
+        for stat in stats:
+            stats_dict[stat] = tracks_df_filtered_top_five[stat].mean()
+
+        top_five_title = "Top 5 Popular Songs"
         if artists_dropdown_compare is not None:
+            for stat in stats:
+                stats_dict[f"{stat}_compare"] = tracks_df[tracks_df['artist'] == artists_dropdown_compare][stat].mean()
             top_five_title = f"Top 5 Popular Songs vs {artists_dropdown_compare}"
-            mean_danceability += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['danceability'].mean())
-            mean_energy += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['energy'].mean())
-            mean_loudness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['loudness'].mean())
-            mean_speechiness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['speechiness'].mean())
-            mean_acousticness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['acousticness'].mean())
-            mean_instrumentalness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['instrumentalness'].mean())
-            mean_liveness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['liveness'].mean())
-            mean_valence += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['valence'].mean())
+
+            for stat in stats:
+                stats_dict[f"{stat}_emoji"] = up_arrow if stats_dict[stat] < stats_dict[
+                    f"{stat}_compare"] else down_arrow
+                stats_dict[
+                    f"{stat}_string"] = f"{format_string.format(stats_dict[stat])} vs {format_string.format(stats_dict[stat + '_compare'])} {stats_dict[f'{stat}_emoji']}"
+        else:
+            for stat in stats:
+                stats_dict[f"{stat}_string"] = format_string.format(stats_dict[stat])
 
         card_mean_danceability = [
             dbc.CardHeader('Danceability', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_danceability, className='text-center', style={'padding': '10px'}),
+            dbc.CardBody(stats_dict["danceability_string"], className='text-center', style={'padding': '10px'}),
         ]
         card_mean_energy = [
             dbc.CardHeader('Energy', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_energy, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["energy_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_loudness = [
             dbc.CardHeader('Loudness', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_loudness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["loudness_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_speechiness = [
             dbc.CardHeader('Speechiness', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_speechiness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["speechiness_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_acousticness = [
             dbc.CardHeader('Acousticness', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_acousticness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["acousticness_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_instrumentalness = [
             dbc.CardHeader('Instrumentalness', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_instrumentalness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["instrumentalness_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_liveness = [
             dbc.CardHeader('Liveness', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_liveness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["liveness_string"], className='text-center', style={'padding': '10px'})
         ]
         card_mean_valence = [
             dbc.CardHeader('Valence', style={"color": "#1db954"}, className='text-center'),
-            dbc.CardBody(mean_valence, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["valence_string"], className='text-center', style={'padding': '10px'})
         ]
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence, top_five_title
