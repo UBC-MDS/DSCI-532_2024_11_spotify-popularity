@@ -20,21 +20,20 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Col([
             html.Div([
-                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
-                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '30px'}),
+                html.H1('Spotify', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Popularity', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px'}),
+                html.H1('Dashboard', style={'color': 'white', 'align-items': 'left', 'margin-left': '15px', 'margin-bottom': '30px'}),
                 html.P(
                     "This dashboard is designed for helping record companies to make data driven decisions, so that they can provide valuable and actionable suggestions that can be used as guidance for artists aiming to enhance their music's appeal.",
-                    style={"font-size": "16px", 'color': '#D3D3D3', 'margin-left': '15px'}),
+                    style={"font-size": "15px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.P("Authors: Rachel Bouwer, He Ma, Koray Tecimer, Yimeng Xia",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'}),
                 html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2024_11_spotify-popularity",
                        target="_blank", style={"font-size": "12px", 'margin-left': '15px'}),
-                html.P("Last deployed on April 6, 2024",
+                html.P("Last deployed on April 16, 2024",
                        style={"font-size": "12px", 'color': '#D3D3D3', 'margin-left': '15px'})
             ])
-        ], style={'height': '100vh',
-                  'background-color': '#196543',
+        ], width=2, style={'background-color': '#196543',
                   'display': 'flex',
                   'flex-direction': 'column',
                   'justify-content': 'center'}),
@@ -44,10 +43,10 @@ app.layout = html.Div([
                     html.Div([
                         html.Label('Select one genre you want to analyze:'),
                         cmp.genre_dropdown,
-                        html.Label('Select up to five artists you want to analyze:'),
-                        cmp.artist_dropdown,
                         html.Label('Select the start and end year for the analysis:'),
                         cmp.year_range_selector,
+                        html.Label('Select up to five artists you want to analyze:'),
+                        cmp.artist_dropdown,
                         html.Label('Select an artist to compare (optional):'),
                         dbc.Row([
                             dbc.Col([cmp.optional_artist_selector_dropdown]),
@@ -79,12 +78,12 @@ app.layout = html.Div([
                     ])
                 ])
             ])
-        ], width=7, className="col-7", style={'background-color': '#24BA56'}),
+        ], width=8, style={'background-color': '#24BA56'}),
         dbc.Col([
             cmp.summary_statistics
-        ], width=2, className="col-2", style={'background-color': '#196543'})
-    ])
-])
+        ], width=2, style={'background-color': '#196543'}),
+    ], style={'min-height': '100vh', 'margin': '0', 'overflow': 'hidden'}),
+], style={'height': '100vh', 'margin': '0'})
 
 
 @app.callback(
@@ -110,86 +109,82 @@ def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdo
     if selected_artists is None or start_year is None or end_year is None:
         return "", "", "", "", "", "", "", "", "Top 5 Popular Songs"
     else:
+        up_arrow = "\u2191"
+        down_arrow = "\u2193"
         tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                        (tracks_df['release_year'] >= start_year) &
                                        (tracks_df['release_year'] <= end_year)]
         tracks_df_filtered_top_five = tracks_df_filtered.sort_values('popularity', ascending=False).iloc[:5]
 
-        mean_danceability = "{:.3g}".format(tracks_df_filtered_top_five['danceability'].mean())
-        mean_energy = "{:.3g}".format(tracks_df_filtered_top_five['energy'].mean())
-        mean_loudness = "{:.3g}".format(tracks_df_filtered_top_five['loudness'].mean())
-        mean_speechiness = "{:.3g}".format(tracks_df_filtered_top_five['speechiness'].mean())
-        mean_acousticness = "{:.3g}".format(tracks_df_filtered_top_five['acousticness'].mean())
-        mean_instrumentalness = "{:.3g}".format(tracks_df_filtered_top_five['instrumentalness'].mean())
-        mean_liveness = "{:.3g}".format(tracks_df_filtered_top_five['liveness'].mean())
-        mean_valence = "{:.3g}".format(tracks_df_filtered_top_five['valence'].mean())
-        top_five_title = f"Top 5 Popular Songs"
+        format_string = "{:.3g}"
+        stats_dict = {}
+        stats = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness',
+                 'valence']
+        for stat in stats:
+            stats_dict[stat] = tracks_df_filtered_top_five[stat].mean()
+
+        top_five_title = "Top 5 Popular Songs"
         if artists_dropdown_compare is not None:
+            for stat in stats:
+                stats_dict[f"{stat}_compare"] = tracks_df[tracks_df['artist'] == artists_dropdown_compare][stat].mean()
             top_five_title = f"Top 5 Popular Songs vs {artists_dropdown_compare}"
-            mean_danceability += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['danceability'].mean())
-            mean_energy += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['energy'].mean())
-            mean_loudness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['loudness'].mean())
-            mean_speechiness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['speechiness'].mean())
-            mean_acousticness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['acousticness'].mean())
-            mean_instrumentalness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['instrumentalness'].mean())
-            mean_liveness += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['liveness'].mean())
-            mean_valence += " vs. {:.3g}".format(
-                tracks_df[tracks_df['artist'] == artists_dropdown_compare]['valence'].mean())
+
+            for stat in stats:
+                stats_dict[f"{stat}_emoji"] = up_arrow if stats_dict[stat] < stats_dict[
+                    f"{stat}_compare"] else down_arrow
+                stats_dict[
+                    f"{stat}_string"] = f"{format_string.format(stats_dict[stat])} vs {format_string.format(stats_dict[stat + '_compare'])} {stats_dict[f'{stat}_emoji']}"
+        else:
+            for stat in stats:
+                stats_dict[f"{stat}_string"] = format_string.format(stats_dict[stat])
 
         card_mean_danceability = dbc.Card([
             dbc.CardHeader('Danceability', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable", 
                         target="tooltip-target-danceability", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_danceability, className='text-center', style={'padding': '10px'}),
+            dbc.CardBody(stats_dict["danceability_string"], className='text-center', style={'padding': '10px'}),
         ], id="tooltip-target-danceability")
         card_mean_energy = dbc.Card([
             dbc.CardHeader('Energy', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.", 
                         target="tooltip-target-energy", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_energy, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["energy_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-energy")
         card_mean_loudness = dbc.Card([
             dbc.CardHeader('Loudness', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("The overall loudness of a track in decibels (dB)", 
                         target="tooltip-target-loudness", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_loudness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["loudness_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-loudness")
         card_mean_speechiness = dbc.Card([
             dbc.CardHeader('Speechiness', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.", 
                         target="tooltip-target-speechiness", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_speechiness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["speechiness_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-speechiness")
         card_mean_acousticness = dbc.Card([
             dbc.CardHeader('Acousticness', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.", 
                         target="tooltip-target-acousticness", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_acousticness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["acousticness_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-acousticness")
         card_mean_instrumentalness = dbc.Card([
             dbc.CardHeader('Instrumentalness', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("Predicts whether a track contains no vocals. \"Ooh\" and \"aah\" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly \"vocal\". The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.", 
                         target="tooltip-target-instrumentalness", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_instrumentalness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["instrumentalness_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-instrumentalness")
         card_mean_liveness = dbc.Card([
             dbc.CardHeader('Liveness', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.", 
                         target="tooltip-target-liveness", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_liveness, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["liveness_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-liveness")
         card_mean_valence = dbc.Card([
             dbc.CardHeader('Valence', style={"color": "#1db954"}, className='text-center'),
             dbc.Tooltip("A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).", 
                         target="tooltip-target-valence", placement="left", style={"padding": "2px"}),
-            dbc.CardBody(mean_valence, className='text-center', style={'padding': '10px'})
+            dbc.CardBody(stats_dict["valence_string"], className='text-center', style={'padding': '10px'})
         ], id="tooltip-target-valence")
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence, top_five_title
@@ -197,14 +192,37 @@ def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdo
 
 @app.callback(
     Output('artists-dropdown', 'options'),
-    [Input('genre-dropdown', 'value')]
+    [Input('genre-dropdown', 'value'),
+     Input('start-year', 'value'),
+     Input('end-year', 'value')]
 )
-def update_artist_dropdown(selected_genres):
-    if not selected_genres:
+def update_artist_dropdown(selected_genres,start_year, end_year):
+    if not selected_genres or not start_year or not end_year:
         return []
     filtered_artists = tracks_df[tracks_df['genres'].apply(lambda x: any(genre in selected_genres for genre in x))]
+    filtered_artists = filtered_artists[(filtered_artists['release_year'] >= start_year) & (filtered_artists['release_year'] <= end_year)]
     artist_options = [{'label': artist, 'value': artist} for artist in filtered_artists['artist'].unique()]
     return artist_options
+
+
+@app.callback(
+    Output('start-year', 'options'),
+    [Input('end-year', 'value')]
+)
+def update_start_year_dropdown(end_year):
+    if end_year is None:
+        return []
+    return [{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique().tolist()) if year <= end_year]
+
+
+@app.callback(
+    Output('end-year', 'options'),
+    [Input('start-year', 'value')]
+)
+def update_start_year_dropdown(start_year):
+    if start_year is None:
+        return []
+    return [{'label': year, 'value': year} for year in sorted(tracks_df['release_year'].unique().tolist()) if year >= start_year]
 
 
 @app.callback(
