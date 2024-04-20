@@ -14,6 +14,7 @@ from src.components import tracks_df
 # Initiatlize the app
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
+app.title = "Spotify Popularity Dashboard"
 
 # Layout
 app.layout = html.Div([
