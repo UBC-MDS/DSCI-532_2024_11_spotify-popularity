@@ -138,38 +138,54 @@ def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdo
             for stat in stats:
                 stats_dict[f"{stat}_string"] = format_string.format(stats_dict[stat])
 
-        card_mean_danceability = [
+        card_mean_danceability = dbc.Card([
             dbc.CardHeader('Danceability', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable", 
+                        target="tooltip-target-danceability", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["danceability_string"], className='text-center', style={'padding': '10px'}),
-        ]
-        card_mean_energy = [
+        ], id="tooltip-target-danceability")
+        card_mean_energy = dbc.Card([
             dbc.CardHeader('Energy', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.", 
+                        target="tooltip-target-energy", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["energy_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_loudness = [
+        ], id="tooltip-target-energy")
+        card_mean_loudness = dbc.Card([
             dbc.CardHeader('Loudness', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("The overall loudness of a track in decibels (dB)", 
+                        target="tooltip-target-loudness", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["loudness_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_speechiness = [
+        ], id="tooltip-target-loudness")
+        card_mean_speechiness = dbc.Card([
             dbc.CardHeader('Speechiness', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value.", 
+                        target="tooltip-target-speechiness", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["speechiness_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_acousticness = [
+        ], id="tooltip-target-speechiness")
+        card_mean_acousticness = dbc.Card([
             dbc.CardHeader('Acousticness', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.", 
+                        target="tooltip-target-acousticness", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["acousticness_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_instrumentalness = [
+        ], id="tooltip-target-acousticness")
+        card_mean_instrumentalness = dbc.Card([
             dbc.CardHeader('Instrumentalness', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("Predicts whether a track contains no vocals. \"Ooh\" and \"aah\" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly \"vocal\". The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.", 
+                        target="tooltip-target-instrumentalness", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["instrumentalness_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_liveness = [
+        ], id="tooltip-target-instrumentalness")
+        card_mean_liveness = dbc.Card([
             dbc.CardHeader('Liveness', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.", 
+                        target="tooltip-target-liveness", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["liveness_string"], className='text-center', style={'padding': '10px'})
-        ]
-        card_mean_valence = [
+        ], id="tooltip-target-liveness")
+        card_mean_valence = dbc.Card([
             dbc.CardHeader('Valence', style={"color": "#1db954"}, className='text-center'),
+            dbc.Tooltip("A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).", 
+                        target="tooltip-target-valence", placement="left", style={"padding": "2px"}),
             dbc.CardBody(stats_dict["valence_string"], className='text-center', style={'padding': '10px'})
-        ]
+        ], id="tooltip-target-valence")
         return card_mean_danceability, card_mean_energy, card_mean_loudness, card_mean_speechiness, card_mean_acousticness, \
                card_mean_instrumentalness, card_mean_liveness, card_mean_valence, top_five_title
 
