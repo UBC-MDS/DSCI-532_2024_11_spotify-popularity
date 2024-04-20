@@ -257,8 +257,8 @@ def update_time_chart(selected_artists, start_year, end_year, artists_dropdown_c
         raise PreventUpdate
     if selected_artists is None or start_year is None or end_year is None:
         return {}
-    if artists_dropdown_compare is not None:
-        selected_artists.append(artists_dropdown_compare)
+    # if artists_dropdown_compare is not None:
+    #     selected_artists.append(artists_dropdown_compare)
     tracks_df_filtered = tracks_df[(tracks_df['artist'].isin(selected_artists)) &
                                    (tracks_df['release_year'] >= start_year) &
                                    (tracks_df['release_year'] <= end_year)]
@@ -283,6 +283,19 @@ def update_time_chart(selected_artists, start_year, end_year, artists_dropdown_c
     )
 
     chart = chart + chart.mark_line()
+    if artists_dropdown_compare is not None:
+        # selected_artists.append(artists_dropdown_compare)
+        compare_artist_df = tracks_df[(tracks_df['artist'] == artists_dropdown_compare) & 
+                                   (tracks_df['release_year'] >= start_year) &
+                                   (tracks_df['release_year'] <= end_year)]
+        compare_artist = alt.Chart(compare_artist_df).mark_point(color='red').encode(
+            x='release_year:Q',
+            y=alt.Y('mean(popularity)', title='Popularity'),
+            color=alt.Color('artist', legend=alt.Legend(title="Compare"), scale=alt.Scale(domain=[artists_dropdown_compare], range=['red'])),
+            tooltip=['artist', 'release_year', 'mean(popularity)']
+        )
+        compare_artist_layer =  compare_artist + compare_artist.mark_line(color='red')
+        chart = alt.layer(chart, compare_artist_layer).resolve_scale(color='independent')
     return chart.to_dict()
 
 
