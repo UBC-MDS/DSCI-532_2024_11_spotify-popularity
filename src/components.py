@@ -5,7 +5,7 @@ import src.utils as ut
 import dash_vega_components as dvc
 
 
-tracks_df = pd.read_csv('data/processed/tracks_processed.csv')
+tracks_df = pd.read_parquet('data/processed/tracks_processed.parquet')
 
 # Configuration
 genre_dropdown = dcc.Dropdown(
