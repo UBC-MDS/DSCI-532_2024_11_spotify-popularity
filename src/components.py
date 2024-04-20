@@ -50,10 +50,10 @@ optional_artist_selector_dropdown = dcc.Dropdown(
 
 submit_button = dbc.Button('Plot!', id='submit-button', style={'background-color': '#196543'})
 
-artist_time_chart = dvc.Vega(id='artist-time-chart', spec={}, opt={'actions': False})
-explicit_chart = dvc.Vega(id='explicit-chart', spec={}, opt={'actions': False})
-top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={}, opt={'actions': False})
-speechiness_chart = dvc.Vega(id='speechiness-chart', spec={}, opt={'actions': False})
+# artist_time_chart = dvc.Vega(id='artist-time-chart', spec={}, opt={'actions': False})
+# explicit_chart = dvc.Vega(id='explicit-chart', spec={}, opt={'actions': False})
+# top5songs_barchart = dvc.Vega(id='top5songs-barchart', spec={}, opt={'actions': False})
+# speechiness_chart = dvc.Vega(id='speechiness-chart', spec={}, opt={'actions': False})
 
 summary_statistics = dbc.Col([
     html.Br(),
@@ -95,3 +95,79 @@ milestone_blurb=[
     html.P("Last deployed on April 6, 2023",
            style={"font-size": "12px"})
            ]
+
+
+artist_popularity_card = dbc.Card([
+    dbc.CardHeader('Artist Popularity Over Time', className='text-center', style={'fontWeight': 'bold'}),
+    dbc.CardBody(
+        dvc.Vega(
+            id='artist-time-chart',
+            opt={'actions': False},  # Remove the three dots button
+
+        ),
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
+        }
+    )
+])
+
+explicit_card = dbc.Card([
+    dbc.CardHeader('Mean Popularity of Songs by Type and Artist',  className='text-center',style={'fontWeight': 'bold'}),
+    dbc.CardBody(
+        dvc.Vega(
+            id='explicit-chart',
+            opt={'actions': False},  # Remove the three dots button
+
+        ),
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
+        }
+    )
+])
+
+top_songs_card = dbc.Card([
+    dbc.CardHeader('Popularity of Top Songs',  className='text-center', style={'fontWeight': 'bold'}),
+    dbc.CardBody(
+        dvc.Vega(
+            id='top5songs-barchart',
+            opt={'actions': False},  # Remove the three dots button
+
+        ),
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
+        }
+    )
+])
+
+speechiness_card = dbc.Card([
+    dbc.CardHeader('Popularity by Speechiness Over Time', className='text-center', style={'fontWeight': 'bold'}),
+    dbc.CardBody(
+        dvc.Vega(
+            id='speechiness-chart',
+            opt={'actions': False},  
+
+        ),
+        style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
+        }
+    )
+])
+
+plot_layout = html.Div([
+    dbc.Row([
+        dbc.Col(artist_popularity_card, style={'width': '47%', 'margin-left': '3%'}),
+        dbc.Col(explicit_card, style={'width': '47%', 'margin-right': '3%'})
+    ]),
+    dbc.Row([
+        dbc.Col(top_songs_card, style={'width': '47%', 'margin-left': '3%'}),
+        dbc.Col(speechiness_card, style={'width': '47%', 'margin-right': '3%'})
+    ], style={'margin-top': '0.5%'})
+])
