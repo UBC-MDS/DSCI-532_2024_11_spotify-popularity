@@ -1,6 +1,9 @@
 import ast
+import joblib
 
+memory = joblib.Memory("tmp", verbose=0)
 
+@memory.cache()
 def convert_string_to_list(string):
     try:
         return ast.literal_eval(string)
@@ -10,6 +13,7 @@ def convert_string_to_list(string):
 
 
 # convert stringified lists into actual lists
+@memory.cache()
 def create_genre_dropdown_options(tracks_df):
     tracks_df['genres'] = tracks_df['genres'].apply(convert_string_to_list)
     genres_exploded = tracks_df.explode('genres')

@@ -1,11 +1,9 @@
 from dash import Dash, html, Input, Output
 import dash
-import functools
 import pandas as pd
 import dash_bootstrap_components as dbc
 import altair as alt
 from itertools import product
-import functools
 from dash.exceptions import PreventUpdate
 import os
 import sys
@@ -104,7 +102,6 @@ app.layout = html.Div([
      Input('artists-dropdown-compare', 'value'),
      Input('submit-button', 'n_clicks')]
 )
-@functools.lru_cache()
 def display_artist_tracks(selected_artists, start_year, end_year, artists_dropdown_compare, n_clicks):
     changed_ids = [p['prop_id'] for p in dash.callback_context.triggered]
     if 'submit-button' not in changed_ids[0]:
