@@ -10,6 +10,7 @@ dependencies:
     - pip=21.2.4
     - pandas=2.2.1
     - altair=5.3.0
+    - pyarrow=5.0.0
     - pip:
         - dash-vega-components==0.1.0
         - dash-core-components==2.0.0
